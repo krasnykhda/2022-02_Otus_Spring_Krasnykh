@@ -10,5 +10,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>hw01-start</module>
+        <module>hw02_SpringConfiguration</module>
     </modules>
 </project>
