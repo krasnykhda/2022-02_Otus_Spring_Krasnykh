@@ -58,8 +58,10 @@ public class TestService {
                 ioService.out(++count + ". " + answer.getNameAnswer());
             }
             var userAnswer = ioService.readLn("Выберите вариант ответа:");
+            int countAnswer=0;
             for (Answer answer : question.getAnswers()) {
-                if (answer.isCorrect() && answer.getNameAnswer().equalsIgnoreCase(userAnswer)) {
+                countAnswer++;
+                if (answer.isCorrect() && userAnswer.equals(Integer.toString(countAnswer))) {
                     numberCorrectAnswers++;
                 }
             }

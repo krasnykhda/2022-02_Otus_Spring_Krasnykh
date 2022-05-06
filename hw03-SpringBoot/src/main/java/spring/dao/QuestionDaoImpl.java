@@ -78,7 +78,7 @@ public class QuestionDaoImpl implements QuestionDao {
             question.addAnswer(questionList.get(1), true);
         } else if (questionList.size() > 2) {
             for (int i = 1; i < questionList.size() - 1; i++) {
-                question.addAnswer(questionList.get(i), questionList.get(i).equals(questionList.get(questionList.size() - 1)));
+                question.addAnswer(questionList.get(i), (Integer.toString(i)).equals(questionList.get(questionList.size() - 1)));
             }
         }
 
