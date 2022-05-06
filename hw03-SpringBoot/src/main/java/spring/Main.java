@@ -18,7 +18,6 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        //ApplicationContext ctx = new AnnotationConfigApplicationContext(Main.class);
         ApplicationContext ctx = SpringApplication.run(Main.class, args);
         TestService runner = ctx.getBean(TestService.class);
         runner.run();

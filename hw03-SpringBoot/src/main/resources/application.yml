@@ -1,6 +1,11 @@
+spring:
+  messages:
+    basename: i18n/messages
 question-source:
   file-name: questions.csv
   Language: en
-test-result:
-  numberOfCorrectAnswers: 2
+localization:
+  LanguageTag:
+result:
+  numberOfCorrectAnswers: 3
 

@@ -1,4 +1,4 @@
-package test.java.ru.otus.spring;
+package ru.otus.spring;
 
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
