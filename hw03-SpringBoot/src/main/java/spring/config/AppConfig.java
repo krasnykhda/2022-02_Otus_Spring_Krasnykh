@@ -7,7 +7,7 @@ import spring.service.IOService;
 import spring.service.IOServiceImpl;
 
 @Configuration
-@PropertySource("application.properties")
+@PropertySource("application.yml")
 public class AppConfig {
 
     @Bean

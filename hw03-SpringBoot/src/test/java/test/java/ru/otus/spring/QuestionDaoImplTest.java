@@ -24,6 +24,6 @@ public class QuestionDaoImplTest {
 
     @BeforeEach
     void setUp() {
-        questionDao = new QuestionDaoImpl("badFile");
+        questionDao = new QuestionDaoImpl("badFile","en");
     }
 }

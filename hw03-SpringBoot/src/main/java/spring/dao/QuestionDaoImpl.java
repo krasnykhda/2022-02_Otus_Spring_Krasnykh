@@ -1,6 +1,8 @@
 package spring.dao;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConstructorBinding;
 import org.springframework.stereotype.Component;
 import spring.domain.Question;
 import spring.exceptions.QuestionStructureException;
@@ -15,21 +17,35 @@ import java.util.Arrays;
 import java.util.List;
 
 @Component
+
+//@ConstructorBinding
 public class QuestionDaoImpl implements QuestionDao {
     private final String fileName;
+    private final String language;
 
-    public QuestionDaoImpl(@Value("${filename}") String fileName) {
+    public QuestionDaoImpl(@Value("${question-source.file-name}") String fileName,@Value("${question-source.Language}")String language) {
         this.fileName = fileName;
+        this.language=language;
+
     }
 
     public List<Question> getQuestions() {
         try {
-            return getDataFromStream(getInputStreamFromResources(fileName));
+            return getDataFromStream(getInputStreamFromResources(getFileNameWithLanguage(fileName,language)));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+    private String getFileNameWithLanguage(String fileName,String language){
+        if(language.equals("ru")){
+            return fileName;
+        }else{
+            return fileName.substring(0, fileName.length() - 4)
+                    +"_"+  language
+                    + fileName.substring(this.fileName.length() - 4);
+        }
 
+    }
     private List<Question> getDataFromStream(InputStream is) throws IOException {
         List<Question> dataFromFile = new ArrayList<>();
 
@@ -54,6 +70,7 @@ public class QuestionDaoImpl implements QuestionDao {
         Question question = new Question(questionList.get(0));
         addAnswer(question, questionList);
         return question;
+
     }
 
     private void addAnswer(Question question, List<String> questionList) {
