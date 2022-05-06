@@ -18,7 +18,6 @@ import java.util.List;
 
 @Component
 
-//@ConstructorBinding
 public class QuestionDaoImpl implements QuestionDao {
     private final String fileName;
     private final String language;
