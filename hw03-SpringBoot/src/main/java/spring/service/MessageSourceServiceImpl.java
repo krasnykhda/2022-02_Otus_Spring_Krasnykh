@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Locale;
 
-@ConfigurationProperties(prefix = "localization")
+
 @Component
 public class MessageSourceServiceImpl implements MessageSourceService{
 
@@ -22,7 +22,7 @@ public class MessageSourceServiceImpl implements MessageSourceService{
 
     private Locale locale;
 
-    public MessageSourceServiceImpl(MessageSource messageSource,@Value("${localization.LanguageTag}") String languageTag) {
+    public MessageSourceServiceImpl(MessageSource messageSource,@Value("${question-source.localization.LanguageTag}") String languageTag) {
         this.messageSource = messageSource;
         this.LanguageTag = languageTag;
         this.locale = Locale.forLanguageTag(LanguageTag);
