@@ -10,7 +10,7 @@ import spring.service.MessageSourceService;
 import spring.service.MessageSourceServiceImpl;
 
 @Configuration
-@PropertySource("application.yml")
+@EnableConfigurationProperties(AppSettings.class)
 public class AppConfig {
 
     @Bean

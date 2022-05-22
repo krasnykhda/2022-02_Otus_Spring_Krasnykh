@@ -3,9 +3,9 @@ spring:
     basename: i18n/messages
 question-source:
   file-name: questions.csv
-  Language: ru
+  language: ru
   localization:
-    LanguageTag: ru-RU
+    LanguageTag: ru-Ru
 result:
   numberOfCorrectAnswers: 3
 

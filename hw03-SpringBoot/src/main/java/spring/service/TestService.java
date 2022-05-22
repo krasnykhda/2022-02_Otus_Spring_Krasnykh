@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 import org.springframework.stereotype.Service;
+import spring.config.AppSettings;
 import spring.domain.Answer;
 import spring.domain.Question;
 import spring.exceptions.QuestionStructureException;
@@ -21,21 +22,21 @@ public class TestService {
     private final QuestionService questionService;
     private final MessageSourceService messageSourceService;
 
-    public TestService(@Value("${numberOfCorrectAnswers}") int numberOfCorrectAnswersForTest, IOService ioService, QuestionService questionService, MessageSourceService messageSourceService) {
-        this.numberOfCorrectAnswersForTest = numberOfCorrectAnswersForTest;
+    public TestService(AppSettings appSettings, IOService ioService, QuestionService questionService, MessageSourceService messageSourceService) {
+        this.numberOfCorrectAnswersForTest = appSettings.getNumberOfCorrectAnswers();
         this.ioService = ioService;
         this.questionService = questionService;
         this.messageSourceService = messageSourceService;
     }
 
     public void run() {
-        var name = ioService.readLn(messageSourceService.getMessage("enterName", null));
+        var name = ioService.readLn(messageSourceService.getMessage("enterName"));
         try {
             var questions = questionService.getQuestions();
             int numberCorrectAnswers = showQuestionsAndGetUserAnswers(questions);
             checkResultTest(numberCorrectAnswers, numberOfCorrectAnswersForTest);
         } catch (QuestionStructureException e) {
-            ioService.out(e.getMessage());
+            ioService.out(messageSourceService.getMessage("questionStructureException"));
         } catch (RuntimeException e) {
             ioService.out("Ошибка чтения файла с вопросами");
         }
@@ -45,9 +46,9 @@ public class TestService {
 
     private void checkResultTest(int numberCorrectAnswers, int numberOfCorrectAnswersForTest) {
         if (numberCorrectAnswers >= numberOfCorrectAnswersForTest) {
-            ioService.out(messageSourceService.getMessage("passed", null));
+            ioService.out(messageSourceService.getMessage("passed"));
         } else {
-            ioService.out(messageSourceService.getMessage("missed", null));
+            ioService.out(messageSourceService.getMessage("missed"));
         }
     }
 
@@ -56,11 +57,11 @@ public class TestService {
         for (Question question : questions) {
             int count = 0;
             ioService.out(question.getNameQuestion());
-            ioService.out(messageSourceService.getMessage("responseOption", null));
+            ioService.out(messageSourceService.getMessage("responseOption"));
             for (Answer answer : question.getAnswers()) {
                 ioService.out(++count + ". " + answer.getNameAnswer());
             }
-            var userAnswer = ioService.readLn(messageSourceService.getMessage("chooseAnswerOption", null));
+            var userAnswer = ioService.readLn(messageSourceService.getMessage("chooseAnswerOption"));
             int countAnswer = 0;
             for (Answer answer : question.getAnswers()) {
                 countAnswer++;

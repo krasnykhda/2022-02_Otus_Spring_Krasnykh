@@ -4,7 +4,7 @@ import org.springframework.lang.Nullable;
 
 public interface MessageSourceService {
 
-    @Nullable
-    String getMessage(String code, @Nullable Object[] args);
+
+    String getMessage(String code,  Object...args);
 
 }
