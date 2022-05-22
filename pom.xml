@@ -11,5 +11,6 @@
     <modules>
         <module>hw01-start</module>
         <module>hw02_SpringConfiguration</module>
+        <module>hw03-SpringBoot</module>
     </modules>
 </project>
