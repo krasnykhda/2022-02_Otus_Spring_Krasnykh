@@ -41,12 +41,12 @@ public class ApplicationEventsCommands {
     }
 
     @ShellMethod(value = "Start test", key = {"run", "start", "go"})
-    @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
+    @ShellMethodAvailability(value = "isCommandAvailable")
     public void startTest() {
         testService.run(userName);
     }
 
-    private Availability isPublishEventCommandAvailable() {
+    private Availability isCommandAvailable() {
         return userName == null ? Availability.unavailable("Сначала залогиньтесь") : Availability.available();
     }
 
