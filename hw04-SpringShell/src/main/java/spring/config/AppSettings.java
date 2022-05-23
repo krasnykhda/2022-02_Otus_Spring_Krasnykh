@@ -20,8 +20,6 @@ public class AppSettings {
         return fileName.substring(0, fileName.length() - 4)
                 + "_" + language
                 + fileName.substring(this.fileName.length() - 4);
-
-
     }
 
     public int getNumberOfCorrectAnswers() {
