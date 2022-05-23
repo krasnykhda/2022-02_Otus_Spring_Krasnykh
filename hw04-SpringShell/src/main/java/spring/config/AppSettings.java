@@ -8,13 +8,11 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 public class AppSettings {
     private final String fileName;
     private final String language;
-    private final String languageTag;
     private final int numberOfCorrectAnswers;
 
-    public AppSettings(String fileName, String language, String languageTag, int numberOfCorrectAnswers) {
+    public AppSettings(String fileName, String language, int numberOfCorrectAnswers) {
         this.fileName = fileName;
         this.language = language;
-        this.languageTag = languageTag;
         this.numberOfCorrectAnswers = numberOfCorrectAnswers;
     }
 
@@ -24,10 +22,6 @@ public class AppSettings {
                 + fileName.substring(this.fileName.length() - 4);
 
 
-    }
-
-    public String getLanguageTag() {
-        return languageTag;
     }
 
     public int getNumberOfCorrectAnswers() {

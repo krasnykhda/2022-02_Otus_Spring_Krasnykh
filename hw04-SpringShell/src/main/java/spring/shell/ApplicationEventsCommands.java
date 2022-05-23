@@ -8,7 +8,6 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellMethodAvailability;
 import org.springframework.shell.standard.ShellOption;
-import spring.Main;
 import spring.service.TestService;
 
 import java.util.ArrayList;
@@ -31,9 +30,11 @@ public class ApplicationEventsCommands {
     }
 
     @ShellMethod(value = "Statistic", key = {"stat", "st"})
+    @ShellMethodAvailability(value = "isCommandAvailable")
     public String getStat() {
-       return "Данная функция будет реализована позже";
+        return "Данная функция будет реализована позже";
     }
+
     @ShellMethod(value = "Login command", key = {"l", "login"})
     public String login(@ShellOption(defaultValue = "AnyUser") String userName) {
         this.userName = userName;

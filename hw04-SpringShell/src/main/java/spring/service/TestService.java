@@ -30,7 +30,7 @@ public class TestService {
     }
 
     public void run(String userName) {
-        ioService.out(messageSourceService.getMessage("goodLuck") + " "+ userName);
+        ioService.out(messageSourceService.getMessage("goodLuck") + " " + userName);
         try {
             var questions = questionService.getQuestions();
             int numberCorrectAnswers = showQuestionsAndGetUserAnswers(questions);

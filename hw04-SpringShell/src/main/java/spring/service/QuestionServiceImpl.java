@@ -5,6 +5,7 @@ import spring.dao.QuestionDao;
 import spring.domain.Question;
 
 import java.util.List;
+
 @Service
 public class QuestionServiceImpl implements QuestionService {
 

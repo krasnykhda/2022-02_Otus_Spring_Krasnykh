@@ -10,18 +10,18 @@ import java.util.Locale;
 
 
 @Service
-public class MessageSourceServiceImpl implements MessageSourceService{
+public class MessageSourceServiceImpl implements MessageSourceService {
 
 
     private final MessageSource messageSource;
-    private Locale locale;
+    private final Locale locale;
 
-    public MessageSourceServiceImpl(MessageSource messageSource,@Value("${question-source.localization.LanguageTag}") String languageTag) {
+    public MessageSourceServiceImpl(MessageSource messageSource, @Value("${question-source.localization.LanguageTag}") String languageTag) {
         this.messageSource = messageSource;
         this.locale = Locale.forLanguageTag(languageTag);
     }
 
-    public String getMessage(String code,  Object...args) {
+    public String getMessage(String code, Object... args) {
         return this.messageSource.getMessage(code, args, this.locale);
     }
 
