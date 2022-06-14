@@ -1,0 +1,19 @@
+spring:
+  main:
+    allow-circular-references: true
+  messages:
+    basename: i18n/messages
+  shell:
+    interactive:
+      enabled: false
+question-source:
+  file-name: questions.csv
+  language: en
+  localization:
+    LanguageTag: ru-Ru
+result:
+  numberOfCorrectAnswers: 3
+
+logging:
+  level:
+    root: ERROR
