@@ -10,6 +10,13 @@ import java.util.List;
 public class Book {
     private final long id;
     private final String name;
-    private List<Author> authors;
+    private Author author;
     private Genre genre;
+
+    public Book(long id, String name, Author author, Genre genre) {
+        this.id = id;
+        this.name = name;
+        this.author = author;
+        this.genre = genre;
+    }
 }

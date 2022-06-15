@@ -13,5 +13,6 @@
         <module>hw02_SpringConfiguration</module>
         <module>hw03-SpringBoot</module>
         <module>hw04-SpringShell</module>
+        <module>hw05-JDBC</module>
     </modules>
 </project>

@@ -22,8 +22,6 @@ public class BookDaoJdbc implements BookDao {
 
     public BookDaoJdbc(NamedParameterJdbcOperations namedParameterJdbcOperations, AuthorDao authorDao, GenreDao genreDao)
     {
-        // Это просто оставили, чтобы не переписывать код
-        // В идеале всё должно быть на NamedParameterJdbcOperations
         this.jdbc = namedParameterJdbcOperations.getJdbcOperations();
         this.namedParameterJdbcOperations = namedParameterJdbcOperations;
         this.authorDao = authorDao;
@@ -39,8 +37,9 @@ public class BookDaoJdbc implements BookDao {
     @Override
     public void insert(Book book) {
         genreDao.insert(book.getGenre());
-        namedParameterJdbcOperations.update("insert into book (id, name) values (:id, :name)",
-                Map.of("id", book.getId(), "name", book.getName()));
+        authorDao.insert(book.getAuthor());
+        namedParameterJdbcOperations.update("insert into book (id, name,AuthorID,GenreID) values (:id, :name,:authorID,:genreID)",
+                Map.of("id", book.getId(), "name", book.getName(),"authorID",book.getAuthor().getId(),"genreID",book.getGenre().getId()));
     }
 
     @Override
@@ -53,7 +52,7 @@ public class BookDaoJdbc implements BookDao {
 
     @Override
     public List<Book> getAll() {
-        return jdbc.query("select id, name from book", new BookMapper());
+        return jdbc.query("select id, name,AuthorID,GenreID from book", new BookMapper());
     }
 
     @Override
@@ -69,8 +68,11 @@ public class BookDaoJdbc implements BookDao {
         @Override
         public Book mapRow(ResultSet resultSet, int i) throws SQLException {
             long id = resultSet.getLong("id");
+            long authorId = resultSet.getLong("AuthorID");
+            long genreID = resultSet.getLong("genreID");
+
             String name = resultSet.getString("name");
-            return new Book(id, name);
+            return new Book(id, name,authorDao.getById(authorId),genreDao.getById(genreID));
         }
     }
 }

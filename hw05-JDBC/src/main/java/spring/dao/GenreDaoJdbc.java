@@ -29,13 +29,13 @@ public class GenreDaoJdbc implements GenreDao {
 
     @Override
     public int count() {
-        Integer count = jdbc.queryForObject("select count(*) from persons", Integer.class);
+        Integer count = jdbc.queryForObject("select count(*) from genre", Integer.class);
         return count == null? 0: count;
     }
 
     @Override
     public void insert(Genre genre) {
-        namedParameterJdbcOperations.update("insert into persons (id, name) values (:id, :name)",
+        namedParameterJdbcOperations.update("insert into genre (id, name) values (:id, :name)",
                 Map.of("id", genre.getId(), "name", genre.getName()));
     }
 
@@ -43,20 +43,20 @@ public class GenreDaoJdbc implements GenreDao {
     public Genre getById(long id) {
         Map<String, Object> params = Collections.singletonMap("id", id);
         return namedParameterJdbcOperations.queryForObject(
-                "select id, name from persons where id = :id", params, new GenreMapper()
+                "select id, name from genre where id = :id", params, new GenreMapper()
         );
     }
 
     @Override
     public List<Genre> getAll() {
-        return jdbc.query("select id, name from persons", new GenreMapper());
+        return jdbc.query("select id, name from genre", new GenreMapper());
     }
 
     @Override
     public void deleteById(long id) {
         Map<String, Object> params = Collections.singletonMap("id", id);
         namedParameterJdbcOperations.update(
-                "delete from persons where id = :id", params
+                "delete from genre where id = :id", params
         );
     }
 
