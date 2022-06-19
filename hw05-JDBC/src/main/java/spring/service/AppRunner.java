@@ -9,9 +9,9 @@ import java.util.List;
 
 @Service
 public class AppRunner {
-    private BookService bookService;
+    private final BookService bookService;
 
-    private IOService ioService;
+    private final IOService ioService;
 
     public AppRunner(BookService bookService, IOService ioService) {
         this.bookService = bookService;
@@ -19,20 +19,25 @@ public class AppRunner {
     }
 
     public void insertBook() {
-        var bookName=ioService.readLn("Введите название книги");
-        bookService.insert(new Book(bookName,new Author("Вася"),new Genre("Роман")));
+        var bookName = ioService.readLn("Введите название книги");
+        var authorName = ioService.readLn("Введите имя автора");
+        var genreName = ioService.readLn("Введите имя жанра");
+        bookService.insert(new Book(bookName, new Author(authorName), new Genre(genreName)));
+
     }
 
-    public Book getById(long id) {
-        return bookService.getById(id);
+    public void getById() {
+        var id = ioService.readLn("Введите идентификатор книги");
+        ioService.out(bookService.getById(Long.parseLong(id)).toString());
     }
 
-    public List<Book> getAll() {
-        return bookService.getAll();
+    public void getAll() {
+        ioService.out(bookService.getAll().toString());
     }
 
-    public void deleteById(long id) {
-        bookService.deleteById(id);
+    public void deleteById() {
+        var id = ioService.readLn("Введите идентификатор удалямой книги");
+        bookService.deleteById(Long.parseLong(id));
 
     }
 }

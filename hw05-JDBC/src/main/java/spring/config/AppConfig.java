@@ -10,10 +10,9 @@ import spring.service.IOServiceImpl;
 public class AppConfig {
 
     @Bean
-    IOService ioService(){
+    IOService ioService() {
         return new IOServiceImpl(System.out, System.in);
     }
-
 
 
 }

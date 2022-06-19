@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-@RequiredArgsConstructor
+
 @Data
 public class Book {
     private final Long id;
@@ -13,8 +13,15 @@ public class Book {
     private Author author;
     private Genre genre;
 
+    public Book(Long id, String name, Author author, Genre genre) {
+        this.id = id;
+        this.name = name;
+        this.author = author;
+        this.genre = genre;
+    }
+
     public Book(String name, Author author, Genre genre) {
-        this.id=null;
+        this.id = null;
         this.name = name;
         this.author = author;
         this.genre = genre;

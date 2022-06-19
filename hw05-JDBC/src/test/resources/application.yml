@@ -1,19 +1,17 @@
 spring:
   main:
     allow-circular-references: true
-  messages:
-    basename: i18n/messages
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/SpringJDBC"
+    username: "postgres"
+    password: "123"
   shell:
     interactive:
       enabled: false
-question-source:
-  file-name: questions.csv
-  language: en
-  localization:
-    LanguageTag: ru-Ru
-result:
-  numberOfCorrectAnswers: 3
+  sql:
+    init:
+      mode: always
+      data-locations: data.sql
+      schema-locations: schema.sql
 
-logging:
-  level:
-    root: ERROR
+

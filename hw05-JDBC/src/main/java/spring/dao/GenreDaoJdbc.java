@@ -2,7 +2,10 @@ package spring.dao;
 
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import spring.domain.Genre;
 
@@ -19,23 +22,27 @@ public class GenreDaoJdbc implements GenreDao {
     private final JdbcOperations jdbc;
     private final NamedParameterJdbcOperations namedParameterJdbcOperations;
 
-    public GenreDaoJdbc(NamedParameterJdbcOperations namedParameterJdbcOperations)
-    {
+    public GenreDaoJdbc(NamedParameterJdbcOperations namedParameterJdbcOperations) {
 
         this.jdbc = namedParameterJdbcOperations.getJdbcOperations();
         this.namedParameterJdbcOperations = namedParameterJdbcOperations;
     }
 
-    @Override
-    public int count() {
-        Integer count = jdbc.queryForObject("select count(*) from genre", Integer.class);
-        return count == null? 0: count;
-    }
 
     @Override
-    public void insert(Genre genre) {
+    public Genre insert(Genre genre) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        MapSqlParameterSource paramSource = new MapSqlParameterSource();
+        paramSource.addValue("name", genre.getName());
         namedParameterJdbcOperations.update("insert into genre ( name) values (:name)",
-                Map.of("name", genre.getName()));
+                paramSource, keyHolder);
+        long newId = 0;
+        if (keyHolder.getKeys().size() > 1) {
+            newId = (Long) keyHolder.getKeys().get("id");
+        } else {
+            newId = keyHolder.getKey().longValue();
+        }
+        return new Genre(newId, genre.getName());
     }
 
     @Override
@@ -59,7 +66,7 @@ public class GenreDaoJdbc implements GenreDao {
         );
     }
 
-    private  class GenreMapper implements RowMapper<Genre> {
+    private class GenreMapper implements RowMapper<Genre> {
 
         @Override
         public Genre mapRow(ResultSet resultSet, int i) throws SQLException {

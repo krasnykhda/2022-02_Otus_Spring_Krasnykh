@@ -2,7 +2,10 @@ package spring.dao;
 
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import spring.domain.Author;
 
@@ -19,24 +22,27 @@ public class AuthorDaoJdbc implements AuthorDao {
     private final JdbcOperations jdbc;
     private final NamedParameterJdbcOperations namedParameterJdbcOperations;
 
-    public AuthorDaoJdbc(NamedParameterJdbcOperations namedParameterJdbcOperations)
-    {
-        // Это просто оставили, чтобы не переписывать код
-        // В идеале всё должно быть на NamedParameterJdbcOperations
+    public AuthorDaoJdbc(NamedParameterJdbcOperations namedParameterJdbcOperations) {
         this.jdbc = namedParameterJdbcOperations.getJdbcOperations();
         this.namedParameterJdbcOperations = namedParameterJdbcOperations;
     }
 
-    @Override
-    public int count() {
-        Integer count = jdbc.queryForObject("select count(*) from Author", Integer.class);
-        return count == null? 0: count;
-    }
 
     @Override
-    public void insert(Author autor) {
+    public Author insert(Author autor) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        MapSqlParameterSource paramSource = new MapSqlParameterSource();
+        paramSource.addValue("name", autor.getName());
+
         namedParameterJdbcOperations.update("insert into Author (name) values (:name)",
-                Map.of( "name", autor.getName()));
+                paramSource, keyHolder);
+        long newId = 0;
+        if (keyHolder.getKeys().size() > 1) {
+            newId = (Long) keyHolder.getKeys().get("id");
+        } else {
+            newId = keyHolder.getKey().longValue();
+        }
+        return new Author(newId, autor.getName());
     }
 
     @Override
@@ -60,7 +66,7 @@ public class AuthorDaoJdbc implements AuthorDao {
         );
     }
 
-    private  class AuthorMapper implements RowMapper<Author> {
+    private class AuthorMapper implements RowMapper<Author> {
 
         @Override
         public Author mapRow(ResultSet resultSet, int i) throws SQLException {
