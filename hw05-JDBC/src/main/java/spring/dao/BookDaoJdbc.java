@@ -38,8 +38,8 @@ public class BookDaoJdbc implements BookDao {
     public void insert(Book book) {
         genreDao.insert(book.getGenre());
         authorDao.insert(book.getAuthor());
-        namedParameterJdbcOperations.update("insert into book (id, name,AuthorID,GenreID) values (:id, :name,:authorID,:genreID)",
-                Map.of("id", book.getId(), "name", book.getName(),"authorID",book.getAuthor().getId(),"genreID",book.getGenre().getId()));
+        namedParameterJdbcOperations.update("insert into book (name,AuthorID,GenreID) values (:name,:authorID,:genreID)",
+                Map.of( "name", book.getName(),"authorID",book.getAuthor().getId(),"genreID",book.getGenre().getId()));
     }
 
     @Override
@@ -72,7 +72,7 @@ public class BookDaoJdbc implements BookDao {
             long genreID = resultSet.getLong("genreID");
 
             String name = resultSet.getString("name");
-            return new Book(id, name,authorDao.getById(authorId),genreDao.getById(genreID));
+            return new Book(name,authorDao.getById(authorId),genreDao.getById(genreID));
         }
     }
 }

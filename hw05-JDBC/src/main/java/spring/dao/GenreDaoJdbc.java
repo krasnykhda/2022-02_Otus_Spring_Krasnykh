@@ -21,8 +21,7 @@ public class GenreDaoJdbc implements GenreDao {
 
     public GenreDaoJdbc(NamedParameterJdbcOperations namedParameterJdbcOperations)
     {
-        // Это просто оставили, чтобы не переписывать код
-        // В идеале всё должно быть на NamedParameterJdbcOperations
+
         this.jdbc = namedParameterJdbcOperations.getJdbcOperations();
         this.namedParameterJdbcOperations = namedParameterJdbcOperations;
     }
@@ -35,8 +34,8 @@ public class GenreDaoJdbc implements GenreDao {
 
     @Override
     public void insert(Genre genre) {
-        namedParameterJdbcOperations.update("insert into genre (id, name) values (:id, :name)",
-                Map.of("id", genre.getId(), "name", genre.getName()));
+        namedParameterJdbcOperations.update("insert into genre ( name) values (:name)",
+                Map.of("name", genre.getName()));
     }
 
     @Override

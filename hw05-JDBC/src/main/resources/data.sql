@@ -1,1 +1,1 @@
-insert into Author (id, `name`) values (1, 'masha');
+insert into book (id,`name`) values (1,'masha');

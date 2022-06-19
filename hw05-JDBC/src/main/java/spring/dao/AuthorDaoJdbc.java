@@ -35,8 +35,8 @@ public class AuthorDaoJdbc implements AuthorDao {
 
     @Override
     public void insert(Author autor) {
-        namedParameterJdbcOperations.update("insert into Author (id, name) values (:id, :name)",
-                Map.of("id", autor.getId(), "name", autor.getName()));
+        namedParameterJdbcOperations.update("insert into Author (name) values (:name)",
+                Map.of( "name", autor.getName()));
     }
 
     @Override
