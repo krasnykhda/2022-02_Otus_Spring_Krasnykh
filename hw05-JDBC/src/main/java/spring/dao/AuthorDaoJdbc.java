@@ -62,11 +62,11 @@ public class AuthorDaoJdbc implements AuthorDao {
     public void deleteById(long id) {
         Map<String, Object> params = Collections.singletonMap("id", id);
         namedParameterJdbcOperations.update(
-                "delete from persons where id = :id", params
+                "delete from Author where id = :id", params
         );
     }
 
-    private class AuthorMapper implements RowMapper<Author> {
+    private static class AuthorMapper implements RowMapper<Author> {
 
         @Override
         public Author mapRow(ResultSet resultSet, int i) throws SQLException {

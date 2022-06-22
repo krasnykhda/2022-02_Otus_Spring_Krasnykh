@@ -56,13 +56,12 @@ public class BookDaoJdbc implements BookDao {
     public Book getById(long id) {
         Map<String, Object> params = Collections.singletonMap("id", id);
         return namedParameterJdbcOperations.queryForObject(
-                "select id, name,AuthorID,genreID from book where id = :id", params, new BookMapper()
-        );
+                "select id, name,AuthorID,genreID from book where id = :id", params, new BookMapper(authorDao,genreDao));
     }
 
     @Override
     public List<Book> getAll() {
-        return jdbc.query("select id, name,AuthorID,GenreID from book", new BookMapper());
+        return jdbc.query("select id, name,AuthorID,GenreID from book", new BookMapper(authorDao,genreDao));
     }
 
     @Override
@@ -73,7 +72,14 @@ public class BookDaoJdbc implements BookDao {
         );
     }
 
-    private class BookMapper implements RowMapper<Book> {
+    private static class BookMapper implements RowMapper<Book> {
+        private final AuthorDao authorDao;
+        private final GenreDao genreDao;
+
+        public BookMapper(AuthorDao authorDao, GenreDao genreDao) {
+            this.authorDao = authorDao;
+            this.genreDao = genreDao;
+        }
 
         @Override
         public Book mapRow(ResultSet resultSet, int i) throws SQLException {

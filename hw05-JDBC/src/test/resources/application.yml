@@ -2,7 +2,8 @@ spring:
   main:
     allow-circular-references: true
   datasource:
-    url: "jdbc:postgresql://localhost:5432/SpringJDBC"
+   # url: "jdbc:postgresql://localhost:5432/SpringJDBC"
+    url: jdbc:h2:mem:testdb
     username: "postgres"
     password: "123"
   shell:

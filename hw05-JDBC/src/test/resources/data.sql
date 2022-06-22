@@ -1,2 +1,2 @@
-insert into author (name) values ('masha');
+insert into author (id,name) values (1000,'masha');
 
