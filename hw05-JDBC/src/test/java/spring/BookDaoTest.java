@@ -3,28 +3,29 @@ package spring;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+
+
 import org.springframework.boot.test.context.SpringBootTest;
-
-
+import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+import spring.dao.AuthorDaoJdbc;
 import spring.dao.BookDao;
+import spring.dao.BookDaoJdbc;
+import spring.dao.GenreDaoJdbc;
 import spring.domain.Author;
 import spring.domain.Book;
 import spring.domain.Genre;
 
-
-@SpringBootTest
+@JdbcTest
+@Import({BookDaoJdbc.class, AuthorDaoJdbc.class, GenreDaoJdbc.class})
 @Transactional
-public class BookServiceTest {
-
+public class BookDaoTest {
     @Autowired
     private BookDao bookDao;
-
-
     @Test
     @DisplayName("Метод получения списка книг работает корректно")
-    @Rollback
     void getAllTest() {
         bookDao.insert(new Book("Книга 1", new Author("Автор 1"), new Genre("Роман")));
         bookDao.insert(new Book("Книга 2", new Author("Автор 1"), new Genre("Роман")));
@@ -44,7 +45,6 @@ public class BookServiceTest {
 
     @Test
     @DisplayName("Метод получения книги по идентификатору работает корректно")
-    @Rollback
     void getByIdTest() {
         var book1 = bookDao.insert(new Book("Книга 7", new Author("Автор 1"), new Genre("Роман")));
         var book2 = bookDao.insert(new Book("Книга 8", new Author("Автор 1"), new Genre("Роман")));
@@ -58,7 +58,6 @@ public class BookServiceTest {
 
     @Test
     @DisplayName("Метод вставки книги работает корректно")
-    @Rollback
     void insertTest() {
         var book = bookDao.insert(new Book("Книга 13", new Author("Автор 1"), new Genre("Роман")));
         var bookFromDB = bookDao.getById(book.getId());
@@ -68,7 +67,6 @@ public class BookServiceTest {
 
     @Test
     @DisplayName("Метод удаления книги по идентификатору работает корректно")
-    @Rollback
     void deleteTest() {
         var book1 = bookDao.insert(new Book("Книга 7", new Author("Автор 1"), new Genre("Роман")));
         var book2 = bookDao.insert(new Book("Книга 8", new Author("Автор 1"), new Genre("Роман")));

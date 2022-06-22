@@ -34,14 +34,9 @@ public class GenreDaoJdbc implements GenreDao {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
         paramSource.addValue("name", genre.getName());
-        namedParameterJdbcOperations.update("insert into genre ( name) values (:name)",
-                paramSource, keyHolder);
-        long newId = 0;
-        if (keyHolder.getKeys().size() > 1) {
-            newId = (Long) keyHolder.getKeys().get("id");
-        } else {
-            newId = keyHolder.getKey().longValue();
-        }
+        namedParameterJdbcOperations.update("insert into Genre (name) values (:name)",
+                paramSource, keyHolder, new String[]{"id"});
+        long newId = keyHolder.getKey().longValue();
         return new Genre(newId, genre.getName());
     }
 

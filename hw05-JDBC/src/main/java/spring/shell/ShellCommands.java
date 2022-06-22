@@ -1,6 +1,7 @@
 package spring.shell;
 
 import lombok.RequiredArgsConstructor;
+import org.h2.tools.Console;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import spring.service.AppRunner;

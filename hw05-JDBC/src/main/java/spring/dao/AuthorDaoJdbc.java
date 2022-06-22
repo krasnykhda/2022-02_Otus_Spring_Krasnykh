@@ -35,13 +35,9 @@ public class AuthorDaoJdbc implements AuthorDao {
         paramSource.addValue("name", autor.getName());
 
         namedParameterJdbcOperations.update("insert into Author (name) values (:name)",
-                paramSource, keyHolder);
-        long newId = 0;
-        if (keyHolder.getKeys().size() > 1) {
-            newId = (Long) keyHolder.getKeys().get("id");
-        } else {
-            newId = keyHolder.getKey().longValue();
-        }
+                paramSource, keyHolder, new String[]{"id"});
+        long newId = keyHolder.getKey().longValue();
+
         return new Author(newId, autor.getName());
     }
 

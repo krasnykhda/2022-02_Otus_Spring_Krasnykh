@@ -1,5 +1,6 @@
 package spring.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -20,8 +21,10 @@ import java.util.Map;
 public class BookDaoJdbc implements BookDao {
 
     private final JdbcOperations jdbc;
+   @Autowired
     private final AuthorDao authorDao;
-    private final GenreDao genreDao;
+    @Autowired
+   private final GenreDao genreDao;
     private final NamedParameterJdbcOperations namedParameterJdbcOperations;
 
     public BookDaoJdbc(NamedParameterJdbcOperations namedParameterJdbcOperations, AuthorDao authorDao, GenreDao genreDao) {
@@ -42,13 +45,9 @@ public class BookDaoJdbc implements BookDao {
         paramSource.addValue("authorID", author.getId());
         paramSource.addValue("genreID", genre.getId());
         namedParameterJdbcOperations.update("insert into book (name,AuthorID,GenreID) values (:name,:authorID,:genreID)",
-                paramSource, keyHolder);
-        long newId = 0;
-        if (keyHolder.getKeys().size() > 1) {
-            newId = (Long) keyHolder.getKeys().get("id");
-        } else {
-            newId = keyHolder.getKey().longValue();
-        }
+                paramSource, keyHolder, new String[]{"id"});
+        long newId = keyHolder.getKey().longValue();
+
         return new Book(newId, book.getName(), author, genre);
     }
 
@@ -56,12 +55,12 @@ public class BookDaoJdbc implements BookDao {
     public Book getById(long id) {
         Map<String, Object> params = Collections.singletonMap("id", id);
         return namedParameterJdbcOperations.queryForObject(
-                "select id, name,AuthorID,genreID from book where id = :id", params, new BookMapper(authorDao,genreDao));
+                "select id, name,AuthorID,genreID from book where id = :id", params, new BookMapper(authorDao, genreDao));
     }
 
     @Override
     public List<Book> getAll() {
-        return jdbc.query("select id, name,AuthorID,GenreID from book", new BookMapper(authorDao,genreDao));
+        return jdbc.query("select id, name,AuthorID,GenreID from book", new BookMapper(authorDao, genreDao));
     }
 
     @Override
