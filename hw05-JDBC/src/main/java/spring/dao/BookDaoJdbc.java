@@ -21,10 +21,10 @@ import java.util.Map;
 public class BookDaoJdbc implements BookDao {
 
     private final JdbcOperations jdbc;
-   @Autowired
+    @Autowired
     private final AuthorDao authorDao;
     @Autowired
-   private final GenreDao genreDao;
+    private final GenreDao genreDao;
     private final NamedParameterJdbcOperations namedParameterJdbcOperations;
 
     public BookDaoJdbc(NamedParameterJdbcOperations namedParameterJdbcOperations, AuthorDao authorDao, GenreDao genreDao) {
@@ -39,8 +39,8 @@ public class BookDaoJdbc implements BookDao {
     public Book insert(Book book) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
-        var genre = genreDao.insert(book.getGenre());
-        var author = authorDao.insert(book.getAuthor());
+        var genre = book.getGenre().getId() == null ? genreDao.insert(book.getGenre()) : genreDao.update(book.getGenre());
+        var author = book.getAuthor().getId() == null ? authorDao.insert(book.getAuthor()) : authorDao.update(book.getAuthor());
         paramSource.addValue("name", book.getName());
         paramSource.addValue("authorID", author.getId());
         paramSource.addValue("genreID", genre.getId());
@@ -49,6 +49,13 @@ public class BookDaoJdbc implements BookDao {
         long newId = keyHolder.getKey().longValue();
 
         return new Book(newId, book.getName(), author, genre);
+    }
+
+    @Override
+    public Book update(Book book) {
+        namedParameterJdbcOperations.update("update book set name=:name,AuthorID=:authorID,GenreID=:genreID  where id =:id",
+                Map.of("name", book.getName(),"authorID",book.getAuthor().getId(),"genreID",book.getGenre().getId(),"id",book.getId()));
+        return book;
     }
 
     @Override

@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import spring.domain.Author;
 import spring.domain.Genre;
 
 
@@ -38,6 +39,13 @@ public class GenreDaoJdbc implements GenreDao {
                 paramSource, keyHolder, new String[]{"id"});
         long newId = keyHolder.getKey().longValue();
         return new Genre(newId, genre.getName());
+    }
+
+    @Override
+    public Genre update(Genre genre) {
+        namedParameterJdbcOperations.update("update Genre set name = :name where id = :id",
+                Map.of("name", genre.getName(),"id",genre.getId()));
+        return genre;
     }
 
     @Override

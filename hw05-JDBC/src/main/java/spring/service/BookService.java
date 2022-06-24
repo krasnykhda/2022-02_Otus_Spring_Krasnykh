@@ -5,7 +5,7 @@ import spring.domain.Book;
 import java.util.List;
 
 public interface BookService {
-    void insert(Book book);
+    Book insert(Book book);
 
     Book getById(long id);
 

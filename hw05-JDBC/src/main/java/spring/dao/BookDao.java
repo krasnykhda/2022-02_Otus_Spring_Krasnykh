@@ -1,5 +1,6 @@
 package spring.dao;
 
+import spring.domain.Author;
 import spring.domain.Book;
 
 
@@ -9,7 +10,7 @@ public interface BookDao {
 
 
     Book insert(Book book);
-
+    Book update(Book book);
     Book getById(long id);
 
     List<Book> getAll();
