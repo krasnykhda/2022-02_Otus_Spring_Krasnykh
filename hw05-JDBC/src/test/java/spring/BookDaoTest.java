@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 
 
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import spring.dao.*;
 import spring.domain.Author;
 import spring.domain.Book;
@@ -23,20 +25,28 @@ public class BookDaoTest {
     private BookDao bookDao;
     @Autowired
     private AuthorDao authorDao;
+    //private  NamedParameterJdbcOperations namedParameterJdbcOperations;
+
+
+
     @BeforeEach
     void setUp(){
+/*        MapSqlParameterSource paramSource = new MapSqlParameterSource();
+        paramSource.addValue("name", "Роман");
+        namedParameterJdbcOperations.update("insert into Genre (name) values (:name)",
+                paramSource, keyHolder, new String[]{"id"});*/
         authorDao = Mockito.mock(AuthorDao.class);
         Mockito.when(authorDao.insert(Mockito.any())).thenReturn(new Author("Лев Толстой"));
     }
     @Test
     @DisplayName("Метод получения списка книг работает корректно")
     void getAllTest() {
-        bookDao.insert(new Book("Книга 1", new Author("Автор 13"), new Genre("Роман")));
-        bookDao.insert(new Book("Книга 2", new Author("Автор 14"), new Genre("Роман")));
-        bookDao.insert(new Book("Книга 3", new Author("Автор 15"), new Genre("Роман")));
-        bookDao.insert(new Book("Книга 4", new Author("Автор 16"), new Genre("Роман")));
-        bookDao.insert(new Book("Книга 5", new Author("Автор 17"), new Genre("Роман")));
-        bookDao.insert(new Book("Книга 6", new Author("Автор 18"), new Genre("Роман")));
+        bookDao.insert(new Book("Книга 1", new Author(1L,"Автор 13"), new Genre(1L,"Роман")));
+        bookDao.insert(new Book("Книга 2", new Author(2L,"Автор 14"), new Genre(1L,"Роман")));
+        bookDao.insert(new Book("Книга 3", new Author(3L,"Автор 15"), new Genre(1L,"Роман")));
+        bookDao.insert(new Book("Книга 4", new Author(4L,"Автор 16"), new Genre(1L,"Роман")));
+        bookDao.insert(new Book("Книга 5", new Author(5L,"Автор 17"), new Genre(1L,"Роман")));
+        bookDao.insert(new Book("Книга 6", new Author(6L,"Автор 18"), new Genre(1L,"Роман")));
         var bookList = bookDao.getAll();
         Assertions.assertThat(bookList.size()).isEqualTo(6);
         Assertions.assertThat(bookList.get(0).getName()).isEqualTo("Книга 1");
@@ -50,13 +60,13 @@ public class BookDaoTest {
     @Test
     @DisplayName("Метод получения книги по идентификатору работает корректно")
     void getByIdTest() {
-        var book1 = bookDao.insert(new Book("Книга 7", new Author("Автор 1"), new Genre("Роман")));
+        var book1 = bookDao.insert(new Book("Книга 7", new Author(7L,"Автор 1"), new Genre("Роман")));
 
-        var book2 = bookDao.insert(new Book("Книга 8", new Author("Автор 2"), new Genre("Роман")));
-        var book3 = bookDao.insert(new Book("Книга 9", new Author("Автор 3"), new Genre("Роман")));
-        var book4 = bookDao.insert(new Book("Книга 10", new Author("Автор 4"), new Genre("Роман")));
-        var book5 = bookDao.insert(new Book("Книга 11", new Author("Автор 5"), new Genre("Роман")));
-        var book6 = bookDao.insert(new Book("Книга 12", new Author("Автор 6"), new Genre("Роман")));
+        var book2 = bookDao.insert(new Book("Книга 8", new Author(8L,"Автор 2"), new Genre("Роман")));
+        var book3 = bookDao.insert(new Book("Книга 9", new Author(9L,"Автор 3"), new Genre("Роман")));
+        var book4 = bookDao.insert(new Book("Книга 10", new Author(10L,"Автор 4"), new Genre("Роман")));
+        var book5 = bookDao.insert(new Book("Книга 11", new Author(11L,"Автор 5"), new Genre("Роман")));
+        var book6 = bookDao.insert(new Book("Книга 12", new Author(12L,"Автор 6"), new Genre("Роман")));
         var bookFromDB = bookDao.getById(book4.getId());
         Assertions.assertThat(bookFromDB.getName()).isEqualTo("Книга 10");
     }

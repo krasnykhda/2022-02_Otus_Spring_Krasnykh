@@ -10,6 +10,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import spring.domain.Author;
 import spring.domain.Book;
+import spring.domain.Genre;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,15 +23,12 @@ import java.util.Map;
 public class BookDaoJdbc implements BookDao {
 
     private final JdbcOperations jdbc;
-    private final AuthorDao authorDao;
-    private final GenreDao genreDao;
     private final NamedParameterJdbcOperations namedParameterJdbcOperations;
 
-    public BookDaoJdbc(NamedParameterJdbcOperations namedParameterJdbcOperations, AuthorDao authorDao, GenreDao genreDao) {
+    public BookDaoJdbc(NamedParameterJdbcOperations namedParameterJdbcOperations) {
         this.jdbc = namedParameterJdbcOperations.getJdbcOperations();
         this.namedParameterJdbcOperations = namedParameterJdbcOperations;
-        this.authorDao = authorDao;
-        this.genreDao = genreDao;
+
     }
 
 
@@ -59,14 +57,15 @@ public class BookDaoJdbc implements BookDao {
     public Book getById(long id) {
         Map<String, Object> params = Collections.singletonMap("id", id);
         return namedParameterJdbcOperations.queryForObject(
-                "select id, name,AuthorID,genreID from book where id = :id", params, new BookMapper(authorDao, genreDao));
+                "select b.id as bookId, b.name as bookName,b.AuthorID,b.GenreID,a.name as authorName,g.name as genreName " +
+                        "from book b left join author a on b.id=a.id left join genre g on b.id=g.id where b.id = :id", params, new BookMapper());
     }
 
     @Override
     public List<Book> getAll() {
         //return jdbc.query("select id, name,AuthorID,GenreID from book", new BookMapper(authorDao, genreDao));
-        return jdbc.query("select b.id as bookId, b.name as bookName,b.AuthorID,b.GenreID,a.name as authorName " +
-                "from book b left join author a on b.id=a.id", new BookMapper(authorDao, genreDao));
+        return jdbc.query("select b.id as bookId, b.name as bookName,b.AuthorID,b.GenreID,a.name as authorName,g.name as genreName " +
+                "from book b left join author a on b.id=a.id left join genre g on b.id=g.id", new BookMapper());
     }
 
     @Override
@@ -78,13 +77,7 @@ public class BookDaoJdbc implements BookDao {
     }
 
     private static class BookMapper implements RowMapper<Book> {
-        private final AuthorDao authorDao;
-        private final GenreDao genreDao;
 
-        public BookMapper(AuthorDao authorDao, GenreDao genreDao) {
-            this.authorDao = authorDao;
-            this.genreDao = genreDao;
-        }
 
         @Override
         public Book mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -93,7 +86,8 @@ public class BookDaoJdbc implements BookDao {
             long genreID = resultSet.getLong("GenreID");
             String authorName=resultSet.getString("authorName");
             String name = resultSet.getString("bookName");
-            return new Book(id, name, new Author(authorId,authorName), genreDao.getById(genreID));
+            String genreName = resultSet.getString("genreName");
+            return new Book(id, name, new Author(authorId,authorName), new Genre(genreID,genreName));
         }
     }
 }
