@@ -24,7 +24,7 @@ public class IOServiceImpl implements IOService {
     @Override
     public String readLn(String prompt) {
         out.println(prompt);
-        return in.next();
+        return in.nextLine();
     }
 
 }

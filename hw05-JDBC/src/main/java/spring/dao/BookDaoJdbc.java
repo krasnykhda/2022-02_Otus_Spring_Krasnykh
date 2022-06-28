@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import spring.domain.Author;
 import spring.domain.Book;
 
 import java.sql.ResultSet;
@@ -21,9 +22,7 @@ import java.util.Map;
 public class BookDaoJdbc implements BookDao {
 
     private final JdbcOperations jdbc;
-    @Autowired
     private final AuthorDao authorDao;
-    @Autowired
     private final GenreDao genreDao;
     private final NamedParameterJdbcOperations namedParameterJdbcOperations;
 
@@ -39,22 +38,20 @@ public class BookDaoJdbc implements BookDao {
     public Book insert(Book book) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
-        var genre = book.getGenre().getId() == null ? genreDao.insert(book.getGenre()) : genreDao.update(book.getGenre());
-        var author = book.getAuthor().getId() == null ? authorDao.insert(book.getAuthor()) : authorDao.update(book.getAuthor());
         paramSource.addValue("name", book.getName());
-        paramSource.addValue("authorID", author.getId());
-        paramSource.addValue("genreID", genre.getId());
+        paramSource.addValue("authorID", book.getAuthor().getId());
+        paramSource.addValue("genreID", book.getGenre().getId());
         namedParameterJdbcOperations.update("insert into book (name,AuthorID,GenreID) values (:name,:authorID,:genreID)",
                 paramSource, keyHolder, new String[]{"id"});
         long newId = keyHolder.getKey().longValue();
 
-        return new Book(newId, book.getName(), author, genre);
+        return new Book(newId, book.getName(), book.getAuthor(), book.getGenre());
     }
 
     @Override
     public Book update(Book book) {
         namedParameterJdbcOperations.update("update book set name=:name,AuthorID=:authorID,GenreID=:genreID  where id =:id",
-                Map.of("name", book.getName(),"authorID",book.getAuthor().getId(),"genreID",book.getGenre().getId(),"id",book.getId()));
+                Map.of("name", book.getName(), "authorID", book.getAuthor().getId(), "genreID", book.getGenre().getId(), "id", book.getId()));
         return book;
     }
 
@@ -67,7 +64,9 @@ public class BookDaoJdbc implements BookDao {
 
     @Override
     public List<Book> getAll() {
-        return jdbc.query("select id, name,AuthorID,GenreID from book", new BookMapper(authorDao, genreDao));
+        //return jdbc.query("select id, name,AuthorID,GenreID from book", new BookMapper(authorDao, genreDao));
+        return jdbc.query("select b.id as bookId, b.name as bookName,b.AuthorID,b.GenreID,a.name as authorName " +
+                "from book b left join author a on b.id=a.id", new BookMapper(authorDao, genreDao));
     }
 
     @Override
@@ -89,12 +88,12 @@ public class BookDaoJdbc implements BookDao {
 
         @Override
         public Book mapRow(ResultSet resultSet, int i) throws SQLException {
-            long id = resultSet.getLong("id");
+            long id = resultSet.getLong("bookId");
             long authorId = resultSet.getLong("AuthorID");
             long genreID = resultSet.getLong("GenreID");
-
-            String name = resultSet.getString("name");
-            return new Book(id, name, authorDao.getById(authorId), genreDao.getById(genreID));
+            String authorName=resultSet.getString("authorName");
+            String name = resultSet.getString("bookName");
+            return new Book(id, name, new Author(authorId,authorName), genreDao.getById(genreID));
         }
     }
 }

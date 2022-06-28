@@ -2,6 +2,7 @@ package spring;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 
@@ -22,7 +23,11 @@ public class BookDaoTest {
     private BookDao bookDao;
     @Autowired
     private AuthorDao authorDao;
-
+    @BeforeEach
+    void setUp(){
+        authorDao = Mockito.mock(AuthorDao.class);
+        Mockito.when(authorDao.insert(Mockito.any())).thenReturn(new Author("Лев Толстой"));
+    }
     @Test
     @DisplayName("Метод получения списка книг работает корректно")
     void getAllTest() {

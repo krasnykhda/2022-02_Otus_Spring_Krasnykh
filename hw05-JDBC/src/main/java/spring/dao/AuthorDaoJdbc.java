@@ -42,10 +42,10 @@ public class AuthorDaoJdbc implements AuthorDao {
     }
 
     @Override
-    public Author update(Author autor) {
+    public Author update(Author author) {
         namedParameterJdbcOperations.update("update Author set name = :name where id = :id",
-                Map.of("name", autor.getName(),"id",autor.getId()));
-        return autor;
+                Map.of("name", author.getName(), "id", author.getId()));
+        return author;
     }
 
     @Override

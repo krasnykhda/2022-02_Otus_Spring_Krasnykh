@@ -5,24 +5,27 @@ import spring.domain.Author;
 import spring.domain.Book;
 import spring.domain.Genre;
 
-import java.util.List;
-
 @Service
 public class AppRunner {
     private final BookService bookService;
-
+    private final AuthorService authorService;
+    private final GenreService genreService;
     private final IOService ioService;
 
-    public AppRunner(BookService bookService, IOService ioService) {
+    public AppRunner(BookService bookService, AuthorService authorService, GenreService genreService, IOService ioService) {
         this.bookService = bookService;
+        this.authorService = authorService;
+        this.genreService = genreService;
         this.ioService = ioService;
     }
 
     public void insertBook() {
         var bookName = ioService.readLn("Введите название книги");
         var authorName = ioService.readLn("Введите имя автора");
+        var author=authorService.insert(new Author(authorName));
         var genreName = ioService.readLn("Введите имя жанра");
-        bookService.insert(new Book(bookName, new Author(authorName), new Genre(genreName)));
+        var genre=genreService.insert(new Genre(genreName));
+        bookService.insert(new Book(bookName, author, genre));
 
     }
 

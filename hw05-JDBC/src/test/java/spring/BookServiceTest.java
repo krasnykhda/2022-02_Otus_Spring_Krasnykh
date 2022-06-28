@@ -15,7 +15,7 @@ import spring.service.BookServiceImpl;
 
 @JdbcTest
 @Import({BookServiceImpl.class,BookDaoJdbc.class, AuthorDaoJdbc.class, GenreDaoJdbc.class})
-public class BookServiseTest {
+public class BookServiceTest {
     @Autowired
     private BookService bookService;
     @Autowired

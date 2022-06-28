@@ -44,7 +44,7 @@ public class GenreDaoJdbc implements GenreDao {
     @Override
     public Genre update(Genre genre) {
         namedParameterJdbcOperations.update("update Genre set name = :name where id = :id",
-                Map.of("name", genre.getName(),"id",genre.getId()));
+                Map.of("name", genre.getName(), "id", genre.getId()));
         return genre;
     }
 
