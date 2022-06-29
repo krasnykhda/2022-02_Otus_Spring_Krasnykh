@@ -69,7 +69,7 @@ public class GenreDaoJdbc implements GenreDao {
         );
     }
 
-    private class GenreMapper implements RowMapper<Genre> {
+    private static class GenreMapper implements RowMapper<Genre> {
 
         @Override
         public Genre mapRow(ResultSet resultSet, int i) throws SQLException {

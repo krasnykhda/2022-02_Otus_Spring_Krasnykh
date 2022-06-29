@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 public class Book {
     private final Long id;
-    private final String name;
+    private String name;
     private Author author;
     private Genre genre;
 
