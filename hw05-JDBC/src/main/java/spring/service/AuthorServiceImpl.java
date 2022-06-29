@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
-    private AuthorDao authorDao;
+    private final AuthorDao authorDao;
 
     public AuthorServiceImpl(AuthorDao authorDao) {
         this.authorDao = authorDao;

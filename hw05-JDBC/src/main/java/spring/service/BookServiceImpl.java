@@ -8,7 +8,7 @@ import java.util.List;
 
 @Service
 public class BookServiceImpl implements BookService {
-    private BookDao bookDao;
+    private final BookDao bookDao;
 
     public BookServiceImpl(BookDao bookDao) {
         this.bookDao = bookDao;
