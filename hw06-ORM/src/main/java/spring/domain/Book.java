@@ -57,7 +57,7 @@ public class Book {
         this.genre = genre;
     }
 
-    public void addComment(String comment) {
-        comments.add(new Comment(comment));
+    public void addComment(Comment comment) {
+        comments.add(comment);
     }
 }

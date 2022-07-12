@@ -16,6 +16,7 @@ public class ShellCommands {
         libraryService.insertBook();
         return "Книга " + "добавлена";
     }
+
     @ShellMethod(value = "addComment", key = {"addComment", "ac"})
     public String addComment() {
         libraryService.addComment();
@@ -35,5 +36,15 @@ public class ShellCommands {
     @ShellMethod(value = "deleteById", key = {"delId", "di"})
     public void delId() {
         libraryService.deleteById();
+    }
+
+    @ShellMethod(value = "addAuthor2", key = {"adda", "aa"})
+    public void addAuthor2() {
+        libraryService.addAuthor();
+    }
+
+    @ShellMethod(value = "addGenre", key = {"addg", "ag"})
+    public void addGenre() {
+        libraryService.addGenre();
     }
 }

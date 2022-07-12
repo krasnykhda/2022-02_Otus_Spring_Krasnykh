@@ -7,20 +7,24 @@ import spring.domain.*;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class LibraryService {
     private final BookService bookService;
-    private final IOService ioService;
-    @Autowired
-    private EntityManager em;
+    private final CommentService commentService;
+    private final AuthorService authorService;
+    private final GenreService genreService;
 
-    public LibraryService(BookService bookService, IOService ioService) {
+    private final IOService ioService;
+
+
+    public LibraryService(BookService bookService, CommentService commentService, AuthorService authorService, GenreService genreService, IOService ioService) {
         this.bookService = bookService;
+        this.commentService = commentService;
+        this.authorService = authorService;
+        this.genreService = genreService;
         this.ioService = ioService;
     }
-
 
     public void insertBook() {
         var bookName = ioService.readLn("Введите название книги");
@@ -28,10 +32,10 @@ public class LibraryService {
         var authorId = ioService.readLn("Введите ID автора");
         var genreID = ioService.readLn("Введите ID жанра");
         var authors = new ArrayList<Author>();
-        var author = em.find(Author.class, Long.parseLong(authorId));
+        var author = authorService.getById(Long.parseLong(authorId)).get();
         authors.add(author);
         book.setAuthors(authors);
-        book.setGenre(em.find(Genre.class, Long.parseLong(genreID)));
+        book.setGenre(genreService.getById(Long.parseLong(genreID)).get());
         bookService.save(book);
 
     }
@@ -53,10 +57,22 @@ public class LibraryService {
     }
 
     public void addComment() {
-        var bookId = ioService.readLn("Введите ID книги длядобавления комментария");
+        var bookId = ioService.readLn("Введите ID книги для добавления комментария");
         var book = bookService.getById(Long.parseLong(bookId)).get();
-        var comment = ioService.readLn("Введите комментарий");
+        var commentName = ioService.readLn("Введите комментарий");
+        var comment=new Comment(commentName);
+        commentService.save(comment);
         book.addComment(comment);
         bookService.save(book);
+    }
+    public void  addAuthor(){
+        var authorName = ioService.readLn("Введите имя автора");
+        var author=new Author(authorName);
+        authorService.save(author);
+    }
+    public void  addGenre(){
+        var genreName = ioService.readLn("Введите имя жанра");
+        var genre=new Genre(genreName);
+        genreService.save(genre);
     }
 }

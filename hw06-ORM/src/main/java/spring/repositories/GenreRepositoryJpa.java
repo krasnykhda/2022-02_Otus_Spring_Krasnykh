@@ -2,8 +2,8 @@ package spring.repositories;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import spring.domain.Book;
-import spring.domain.Comment;
+import spring.domain.Author;
+import spring.domain.Genre;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,7 +14,7 @@ import java.util.Optional;
 
 
 @Repository
-public class CommentRepositoryJpa implements CommentRepository {
+public class GenreRepositoryJpa implements GenreRepository {
 
 
     @PersistenceContext
@@ -22,47 +22,47 @@ public class CommentRepositoryJpa implements CommentRepository {
     private final EntityManager em;
 
 
-    public CommentRepositoryJpa(EntityManager em) {
+    public GenreRepositoryJpa(EntityManager em) {
         this.em = em;
     }
 
     @Override
-    public Comment save(Comment comment) {
-        if (comment.getId() <= 0) {
-            em.persist(comment);
-            return comment;
+    public Genre save(Genre genre) {
+        if (genre.getId() <= 0) {
+            em.persist(genre);
+            return genre;
         } else {
-            return em.merge(comment);
+            return em.merge(genre);
         }
 
     }
 
     @Override
-    public Optional<Comment> findById(long id) {
+    public Optional<Genre> findById(long id) {
 
-        return Optional.ofNullable(em.find(Comment.class, id));
+        return Optional.ofNullable(em.find(Genre.class, id));
     }
 
     @Override
-    public List<Comment> findAll() {
-        TypedQuery<Comment> query = em.createQuery("select s from Comment s", Comment.class);
+    public List<Genre> findAll() {
+        TypedQuery<Genre> query = em.createQuery("select s from Genre s", Genre.class);
         var resultList = query.getResultList();
         return resultList;
     }
 
     @Override
-    public List<Comment> findByName(String name) {
-        TypedQuery<Comment> query = em.createQuery("select s " +
-                        "from Comment s " +
+    public List<Genre> findByName(String name) {
+        TypedQuery<Genre> query = em.createQuery("select s " +
+                        "from Genre s " +
                         "where s.name = :name",
-                Comment.class);
+                Genre.class);
         query.setParameter("name", name);
         return query.getResultList();
     }
 
     @Override
     public void updateNameById(long id, String name) {
-        Query query = em.createQuery("update Comment s " +
+        Query query = em.createQuery("update Genre s " +
                 "set s.name = :name " +
                 "where s.id = :id");
         query.setParameter("name", name);
@@ -73,7 +73,7 @@ public class CommentRepositoryJpa implements CommentRepository {
     @Override
     public void deleteById(long id) {
         Query query = em.createQuery("delete " +
-                "from Comment s " +
+                "from Genre s " +
                 "where s.id = :id");
         query.setParameter("id", id);
         query.executeUpdate();
