@@ -14,5 +14,6 @@
         <module>hw03-SpringBoot</module>
         <module>hw04-SpringShell</module>
         <module>hw05-JDBC</module>
+        <module>hw06-ORM</module>
     </modules>
 </project>
