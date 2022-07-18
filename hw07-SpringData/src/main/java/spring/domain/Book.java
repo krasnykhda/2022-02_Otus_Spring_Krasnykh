@@ -37,17 +37,13 @@ public class Book {
 
     @Column(name = "name", nullable = false, unique = true)
     private String name;
-    @Fetch(FetchMode.SUBSELECT)
-    @ManyToMany(targetEntity = Author.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+
+    @ManyToMany(targetEntity = Author.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "books_authors", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
     private List<Author> authors;
-    @Fetch(FetchMode.SUBSELECT)
-    @OneToMany(targetEntity = Comment.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "BookID")
-    private final List<Comment> comments = new ArrayList<Comment>();
 
-    @OneToOne(orphanRemoval = true)
+    @ManyToOne(targetEntity = Genre.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "GenreID")
     private Genre genre;
 
@@ -57,7 +53,5 @@ public class Book {
         this.genre = genre;
     }
 
-    public void addComment(Comment comment) {
-        comments.add(comment);
-    }
+
 }
