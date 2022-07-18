@@ -42,8 +42,8 @@ public class Book {
     @JoinTable(name = "books_authors", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
     private List<Author> authors;
-
-    @ManyToOne(targetEntity = Genre.class, cascade = CascadeType.ALL)
+    @Fetch(FetchMode.SELECT)
+    @ManyToOne(targetEntity = Genre.class, fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "GenreID")
     private Genre genre;
 
