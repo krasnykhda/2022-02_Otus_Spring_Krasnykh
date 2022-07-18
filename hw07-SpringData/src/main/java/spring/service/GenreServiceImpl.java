@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
 public class GenreServiceImpl implements GenreService {
 
     private final GenreRepository genreRepository;
@@ -21,6 +20,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
+    @Transactional
     public Genre save(Genre genre) {
         return genreRepository.save(genre);
     }
@@ -37,6 +37,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
+    @Transactional
     public void deleteById(long id) {
         genreRepository.deleteById(id);
 
