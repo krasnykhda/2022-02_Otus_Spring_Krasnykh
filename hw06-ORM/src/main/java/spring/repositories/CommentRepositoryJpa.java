@@ -18,7 +18,6 @@ public class CommentRepositoryJpa implements CommentRepository {
 
 
     @PersistenceContext
-    @Autowired
     private final EntityManager em;
 
 

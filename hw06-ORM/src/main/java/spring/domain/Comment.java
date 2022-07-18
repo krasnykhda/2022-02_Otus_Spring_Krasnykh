@@ -17,6 +17,14 @@ public class Comment {
     private long id;
     @Column(name = "name", nullable = false, unique = true)
     private String name;
+    @ManyToOne(targetEntity = Book.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "BookID")
+    private Book book;
+
+    public Comment(String name, Book book) {
+        this.name = name;
+        this.book = book;
+    }
 
     public Comment(String name) {
         this.name = name;

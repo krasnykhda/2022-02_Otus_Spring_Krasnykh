@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
 public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorRepository authorRepository;
@@ -21,6 +20,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    @Transactional
     public Author save(Author author) {
         return authorRepository.save(author);
     }
@@ -37,6 +37,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    @Transactional
     public void deleteById(long id) {
         authorRepository.deleteById(id);
 

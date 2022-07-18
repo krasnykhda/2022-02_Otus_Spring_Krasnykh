@@ -2,6 +2,7 @@ package spring.repositories;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import spring.domain.Author;
 import spring.domain.Genre;
 
@@ -14,11 +15,11 @@ import java.util.Optional;
 
 
 @Repository
+@Transactional
 public class GenreRepositoryJpa implements GenreRepository {
 
 
     @PersistenceContext
-    @Autowired
     private final EntityManager em;
 
 

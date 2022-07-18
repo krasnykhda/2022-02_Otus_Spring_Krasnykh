@@ -2,6 +2,7 @@ package spring.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import spring.domain.*;
 
 
@@ -39,15 +40,20 @@ public class LibraryService {
         bookService.save(book);
 
     }
-
+    @Transactional(readOnly = true)
     public void getById() {
         var id = ioService.readLn("Введите идентификатор книги");
         ioService.out(bookService.getById(Long.parseLong(id)).toString());
 
     }
 
+    @Transactional(readOnly = true)
     public void getAll() {
-        ioService.out(bookService.getAll().toString());
+       ioService.out(bookService.getAll().toString());
+    }
+    @Transactional(readOnly = true)
+    public void getAllComments() {
+        ioService.out(commentService.getAll().toString());
     }
 
     public void deleteById() {
@@ -62,8 +68,8 @@ public class LibraryService {
         var commentName = ioService.readLn("Введите комментарий");
         var comment=new Comment(commentName);
         commentService.save(comment);
-        book.addComment(comment);
-        bookService.save(book);
+        comment.setBook(book);
+        commentService.save(comment);
     }
     public void  addAuthor(){
         var authorName = ioService.readLn("Введите имя автора");

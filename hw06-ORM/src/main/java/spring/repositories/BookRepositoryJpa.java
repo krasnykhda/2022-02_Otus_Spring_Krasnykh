@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import spring.domain.Book;
 
 import javax.persistence.*;
@@ -12,11 +13,11 @@ import java.util.Optional;
 
 
 @Repository
+@Transactional
 public class BookRepositoryJpa implements BookRepository {
 
 
     @PersistenceContext
-    @Autowired
     private final EntityManager em;
 
 

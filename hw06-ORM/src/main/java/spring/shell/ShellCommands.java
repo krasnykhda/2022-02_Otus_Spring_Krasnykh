@@ -27,6 +27,10 @@ public class ShellCommands {
     public void getAll() {
         libraryService.getAll();
     }
+    @ShellMethod(value = "getAllComments", key = {"getAllComments", "gac"})
+    public void getAllComments() {
+        libraryService.getAllComments();
+    }
 
     @ShellMethod(value = "getById", key = {"getId", "gi"})
     public void getId() {

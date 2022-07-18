@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
@@ -19,6 +18,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public Book save(Book book) {
         return bookRepository.save(book);
     }
@@ -29,12 +29,13 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findById(id);
     }
 
-    @Override
+
     public List<Book> getAll() {
         return bookRepository.findAll();
     }
 
     @Override
+    @Transactional
     public void deleteById(long id) {
         bookRepository.deleteById(id);
 
