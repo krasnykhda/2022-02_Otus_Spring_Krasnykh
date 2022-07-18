@@ -46,9 +46,13 @@ public class LibraryService {
         ioService.out(bookService.getById(Long.parseLong(id)).toString());
 
     }
-    @Transactional
+    @Transactional(readOnly = true)
     public void getAll() {
         ioService.out(bookService.getAll().toString());
+    }
+    @Transactional(readOnly = true)
+    public void getAllComments() {
+        ioService.out(commentService.getAll().toString());
     }
 
     public void deleteById() {
