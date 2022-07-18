@@ -25,66 +25,62 @@ public class BookRepositoryTest {
     @Test
     @DisplayName("Метод получения списка книг работает корректно")
     void getAllTest() {
-        var genre=em.find(Genre.class, 11L);
-        var author=em.find(Author.class, 11L);
-        var authors=new ArrayList<Author>();
+        var genre = em.find(Genre.class, 4L);
+        var author = em.find(Author.class, 4L);
+        var authors = new ArrayList<Author>();
         authors.add(author);
-        bookRepository.save(new Book("Книга 1", authors, genre));
-        bookRepository.save(new Book("Книга 2", authors, genre));
-        bookRepository.save(new Book("Книга 3", authors, genre));
-        bookRepository.save(new Book("Книга 4", authors, genre));
-        bookRepository.save(new Book("Книга 5", authors, genre));
-        bookRepository.save(new Book("Книга 6", authors, genre));
+        for (int i = 1; i < 11; i++) {
+            var book = new Book("Книга " + i, authors, genre);
+            bookRepository.save(book);
+        }
+
+        em.clear();
+
         var bookList = bookRepository.findAll();
-        Assertions.assertThat(bookList.size()).isEqualTo(6);
-        Assertions.assertThat(bookList.get(0).getName()).isEqualTo("Книга 1");
-        Assertions.assertThat(bookList.get(1).getName()).isEqualTo("Книга 2");
-        Assertions.assertThat(bookList.get(2).getName()).isEqualTo("Книга 3");
-        Assertions.assertThat(bookList.get(3).getName()).isEqualTo("Книга 4");
-        Assertions.assertThat(bookList.get(4).getName()).isEqualTo("Книга 5");
-        Assertions.assertThat(bookList.get(5).getName()).isEqualTo("Книга 6");
+        Assertions.assertThat(bookList).hasSize(13);
+        for (int i = 4; i < 14; i++) {
+            Assertions.assertThat(bookList.get(i - 1).getName()).isEqualTo("Книга " + (i - 3));
+        }
     }
 
     @Test
     @DisplayName("Метод получения книги по идентификатору работает корректно")
     void getByIdTest() {
-        var author=em.find(Author.class, 22L);
-        var authors=new ArrayList<Author>();
+        var author = em.find(Author.class, 4L);
+        var authors = new ArrayList<Author>();
         authors.add(author);
-        var genre=em.find(Genre.class, 22L);
-        var book1 = bookRepository.save(new Book("Книга 7", authors, genre));
-        var book2 = bookRepository.save(new Book("Книга 8",authors, genre));
-        var book3 = bookRepository.save(new Book("Книга 9", authors, genre));
-        var book4 = bookRepository.save(new Book("Книга 10", authors, genre));
-        var book5 = bookRepository.save(new Book("Книга 11", authors, genre));
-        var book6 = bookRepository.save(new Book("Книга 12", authors, genre));
-        var bookFromDB = bookRepository.findById(book4.getId()).get();
+        var genre = em.find(Genre.class, 4L);
+        Book book = null;
+        for (int i = 1; i < 11; i++) {
+            book = new Book("Книга " + i, authors, genre);
+            bookRepository.save(book);
+        }
+        var bookFromDB = bookRepository.findById(book.getId()).get();
         Assertions.assertThat(bookFromDB.getName()).isEqualTo("Книга 10");
     }
 
     @Test
     @DisplayName("Метод вставки книги работает корректно")
     void insertTest() {
-        var author=new Author( "Толстой");
-        var authors=new ArrayList<Author>();
+        var author = new Author("Толстой");
+        var authors = new ArrayList<Author>();
         authors.add(author);
-        var book = bookRepository.save(new Book("Книга 13",authors, new Genre( "Роман")));
+        var book = bookRepository.save(new Book("Книга 13", authors, new Genre("Роман")));
         var bookFromDB = bookRepository.findById(book.getId());
         Assertions.assertThat(bookFromDB.get().getName()).isEqualTo("Книга 13");
         Assertions.assertThat(bookFromDB.get().getId()).isEqualTo(book.getId());
     }
-
     @Test
     @DisplayName("Метод обновления книги работает корректно")
     void updatetTest() {
-        var author=em.find(Author.class, 11L);
-        var genre=em.find(Genre.class, 22L);
-        var authors=new ArrayList<Author>();
+        var author = em.find(Author.class, 4L);
+        var genre = em.find(Genre.class, 5L);
+        var authors = new ArrayList<Author>();
         authors.add(author);
         var book = bookRepository.save(new Book("Книга 13", authors, genre));
         var bookFromDB = bookRepository.findById(book.getId()).get();
-        var author2 = em.find(Author.class, 22L);
-        var authors2=new ArrayList<Author>();
+        var author2 = em.find(Author.class, 5L);
+        var authors2 = new ArrayList<Author>();
         authors2.add(author2);
         book.setAuthors(authors2);
         bookRepository.save(book);
@@ -95,20 +91,21 @@ public class BookRepositoryTest {
     @Test
     @DisplayName("Метод удаления книги по идентификатору работает корректно")
     void deleteTest() {
-        var author=em.find(Author.class, 22L);
-        var authors=new ArrayList<Author>();
+        var author = em.find(Author.class, 4L);
+        var authors = new ArrayList<Author>();
         authors.add(author);
-        var genre=em.find(Genre.class, 22L);
-        var book1 = bookRepository.save(new Book("Книга 13", authors, genre));
-        var book2 = bookRepository.save(new Book("Книга 14", authors, genre));
-        var book3 = bookRepository.save(new Book("Книга 15", authors, genre));
-        var book4 = bookRepository.save(new Book("Книга 16", authors, genre));
-        var book5 = bookRepository.save(new Book("Книга 17", authors, genre));
-        var book6 = bookRepository.save(new Book("Книга 18", authors, genre));
-        bookRepository.deleteById(book5.getId());
+        var genre = em.find(Genre.class, 5L);
+        Book book = null;
+        for (int i = 1; i < 11; i++) {
+            book = new Book("Книга " + i, authors, genre);
+            bookRepository.save(book);
+        }
+        bookRepository.deleteById(1L);
+        bookRepository.deleteById(2L);
+        bookRepository.deleteById(3L);
         var bookList = bookRepository.findAll();
-        Assertions.assertThat(bookList.size()).isEqualTo(5);
-        Assertions.assertThat(bookList.get(4).getName()).isEqualTo("Книга 18");
+        Assertions.assertThat(bookList).hasSize(10);
+        Assertions.assertThat(bookList.get(0).getName()).isEqualTo("Книга 1");
 
     }
 
