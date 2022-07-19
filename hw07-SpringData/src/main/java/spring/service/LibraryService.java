@@ -40,7 +40,7 @@ public class LibraryService {
         bookService.save(book);
 
     }
-    @Transactional
+    @Transactional(readOnly = true)
     public void getById(long id) {
        ioService.out(bookService.getById(id).toString());
 
