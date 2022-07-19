@@ -3,6 +3,7 @@ package spring.shell;
 import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import spring.service.IOService;
 import spring.service.LibraryService;
 
 @ShellComponent
@@ -10,7 +11,7 @@ import spring.service.LibraryService;
 public class ShellCommands {
 
     private final LibraryService libraryService;
-
+    private final IOService ioService;
     @ShellMethod(value = "addBook", key = {"addBook", "ab"})
     public String addBook() {
         libraryService.insertBook();
@@ -34,7 +35,8 @@ public class ShellCommands {
 
     @ShellMethod(value = "getById", key = {"getId", "gi"})
     public void getId() {
-        libraryService.getById();
+        var id = ioService.readLn("Введите идентификатор книги");
+        libraryService.getById(Long.parseLong(id));
     }
 
     @ShellMethod(value = "deleteById", key = {"delId", "di"})

@@ -41,9 +41,8 @@ public class LibraryService {
 
     }
     @Transactional
-    public void getById() {
-        var id = ioService.readLn("Введите идентификатор книги");
-        ioService.out(bookService.getById(Long.parseLong(id)).toString());
+    public void getById(long id) {
+       ioService.out(bookService.getById(id).toString());
 
     }
     @Transactional(readOnly = true)
