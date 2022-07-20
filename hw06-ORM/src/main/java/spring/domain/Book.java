@@ -37,7 +37,7 @@ public class Book {
 
     @Column(name = "name", nullable = false, unique = true)
     private String name;
-
+    @Fetch(FetchMode.SUBSELECT)
     @ManyToMany(targetEntity = Author.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "books_authors", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
