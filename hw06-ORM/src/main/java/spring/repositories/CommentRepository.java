@@ -15,6 +15,7 @@ public interface CommentRepository {
     List<Comment> findAll();
 
     List<Comment> findByName(String name);
+    List<Comment> findByBookID(long id);
 
     void updateNameById(long id, String name);
 

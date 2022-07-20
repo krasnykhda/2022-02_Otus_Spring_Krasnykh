@@ -30,6 +30,10 @@ public class CommentServiceImpl implements CommentService {
     public Optional<Comment> getById(long id) {
         return commentRepository.findById(id);
     }
+    @Override
+    public List<Comment> getByBookID(long id) {
+        return commentRepository.findByBookID(id);
+    }
 
     @Override
     public List<Comment> getAll() {

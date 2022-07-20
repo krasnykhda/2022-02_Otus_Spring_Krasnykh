@@ -28,9 +28,10 @@ public class ShellCommands {
     public void getAll() {
         libraryService.getAll();
     }
-    @ShellMethod(value = "getAllComments", key = {"getAllComments", "gac"})
-    public void getAllComments() {
-        libraryService.getAllComments();
+    @ShellMethod(value = "getCommentsByBookId", key = {"getCommentsByBookId", "gc"})
+    public void getCommentsByBookId() {
+        var id = ioService.readLn("Введите идентификатор книги");
+        libraryService.getCommentsByBookId(Long.parseLong(id));
     }
 
     @ShellMethod(value = "getById", key = {"getId", "gi"})
