@@ -54,9 +54,8 @@ public class LibraryService {
         ioService.out(commentService.getAll().toString());
     }
 
-    public void deleteById() {
-        var id = ioService.readLn("Введите идентификатор удалямой книги");
-        bookService.deleteById(Long.parseLong(id));
+    public void deleteById(long id) {
+        bookService.deleteById(id);
 
     }
 

@@ -41,7 +41,8 @@ public class ShellCommands {
 
     @ShellMethod(value = "deleteById", key = {"delId", "di"})
     public void delId() {
-        libraryService.deleteById();
+        var id = ioService.readLn("Введите идентификатор удалямой книги");
+        libraryService.deleteById(Long.parseLong(id));
     }
 
     @ShellMethod(value = "addAuthor2", key = {"adda", "aa"})
