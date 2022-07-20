@@ -24,6 +24,14 @@ public class Comment {
     @JoinColumn(name = "BookID")
     private Book book;
 
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
     public Comment(String name, Book book) {
         this.name = name;
         this.book = book;
