@@ -35,10 +35,6 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.findByBookID(id);
     }
 
-    @Override
-    public List<Comment> getAll() {
-        return commentRepository.findAll();
-    }
 
     @Override
     @Transactional
