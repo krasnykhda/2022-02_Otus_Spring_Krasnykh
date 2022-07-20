@@ -15,7 +15,6 @@ import java.util.Optional;
 
 
 @Repository
-@Transactional
 public class GenreRepositoryJpa implements GenreRepository {
 
 
