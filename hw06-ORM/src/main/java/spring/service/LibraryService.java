@@ -41,9 +41,9 @@ public class LibraryService {
 
     }
     @Transactional(readOnly = true)
-    public void getById() {
-        var id = ioService.readLn("Введите идентификатор книги");
-        ioService.out(bookService.getById(Long.parseLong(id)).toString());
+    public void getById(long id) {
+
+        ioService.out(bookService.getById(id).toString());
 
     }
 
@@ -56,9 +56,9 @@ public class LibraryService {
         ioService.out(commentService.getAll().toString());
     }
 
-    public void deleteById() {
-        var id = ioService.readLn("Введите идентификатор удалямой книги");
-        bookService.deleteById(Long.parseLong(id));
+    public void deleteById(long id) {
+
+        bookService.deleteById(id);
 
     }
 
