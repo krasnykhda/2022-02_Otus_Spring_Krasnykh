@@ -3,6 +3,7 @@ package spring.shell;
 import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import spring.domain.Book;
 import spring.service.IOService;
 import spring.service.LibraryService;
 
@@ -14,13 +15,17 @@ public class ShellCommands {
     private final IOService ioService;
     @ShellMethod(value = "addBook", key = {"addBook", "ab"})
     public String addBook() {
-        libraryService.insertBook();
+        var bookName = ioService.readLn("Введите название книги");
+        var authorId = ioService.readLn("Введите ID автора");
+        var genreID = ioService.readLn("Введите ID жанра");
+        libraryService.insertBook(bookName,authorId,genreID);
         return "Книга " + "добавлена";
     }
 
     @ShellMethod(value = "addComment", key = {"addComment", "ac"})
     public String addComment() {
-        libraryService.addComment();
+        var bookId = ioService.readLn("Введите ID книги для добавления комментария");
+        libraryService.addComment(bookId);
         return "Комментарий " + "добавлен";
     }
 
@@ -48,11 +53,13 @@ public class ShellCommands {
 
     @ShellMethod(value = "addAuthor2", key = {"adda", "aa"})
     public void addAuthor2() {
-        libraryService.addAuthor();
+        var authorName = ioService.readLn("Введите имя автора");
+        libraryService.addAuthor(authorName);
     }
 
     @ShellMethod(value = "addGenre", key = {"addg", "ag"})
     public void addGenre() {
-        libraryService.addGenre();
+        var genreName = ioService.readLn("Введите имя жанра");
+        libraryService.addGenre(genreName);
     }
 }

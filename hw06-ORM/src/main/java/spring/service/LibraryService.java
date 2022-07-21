@@ -28,11 +28,8 @@ public class LibraryService {
         this.ioService = ioService;
     }
 
-    public void insertBook() {
-        var bookName = ioService.readLn("Введите название книги");
+    public void insertBook(String bookName,String authorId,String genreID) {
         var book = bookService.save(new Book(bookName));
-        var authorId = ioService.readLn("Введите ID автора");
-        var genreID = ioService.readLn("Введите ID жанра");
         var authors = new ArrayList<Author>();
         var author = authorService.getById(Long.parseLong(authorId)).get();
         authors.add(author);
@@ -63,8 +60,7 @@ public class LibraryService {
 
     }
 
-    public void addComment() {
-        var bookId = ioService.readLn("Введите ID книги для добавления комментария");
+    public void addComment(String bookId) {
         var book = bookService.getById(Long.parseLong(bookId)).get();
         var commentName = ioService.readLn("Введите комментарий");
         var comment=new Comment(commentName);
@@ -72,13 +68,11 @@ public class LibraryService {
         comment.setBook(book);
         commentService.save(comment);
     }
-    public void  addAuthor(){
-        var authorName = ioService.readLn("Введите имя автора");
+    public void  addAuthor(String authorName){
         var author=new Author(authorName);
         authorService.save(author);
     }
-    public void  addGenre(){
-        var genreName = ioService.readLn("Введите имя жанра");
+    public void  addGenre(String genreName){
         var genre=new Genre(genreName);
         genreService.save(genre);
     }
