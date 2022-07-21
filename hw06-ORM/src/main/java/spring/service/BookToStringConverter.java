@@ -8,7 +8,7 @@ import java.util.List;
 
 @Service
 public class BookToStringConverter {
-    public String getBookAsString(Book book){
+    public String getBookAsString(Book book) {
         StringBuilder builder = new StringBuilder("\n");
         builder.append("id книги: ");
         builder.append(book.getId());
@@ -21,7 +21,7 @@ public class BookToStringConverter {
         builder.append("\n");
         builder.append("Авторы книги: [");
         builder.append("\n");
-        for (Author author: book.getAuthors()){
+        for (Author author : book.getAuthors()) {
             builder.append("   Имя автора: ");
             builder.append(author.getName());
         }
@@ -32,11 +32,10 @@ public class BookToStringConverter {
     }
 
 
-
-    public String getBookAsString(List<Book> books){
-        var booksString="";
-        for (Book book:books){
-            booksString=booksString+ getBookAsString(book)+"\n";
+    public String getBookAsString(List<Book> books) {
+        var booksString = "";
+        for (Book book : books) {
+            booksString = booksString + getBookAsString(book) + "\n";
         }
         return booksString;
     }

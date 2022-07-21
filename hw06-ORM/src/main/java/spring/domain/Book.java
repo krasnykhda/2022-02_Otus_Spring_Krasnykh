@@ -32,6 +32,7 @@ public class Book {
     @ManyToOne(targetEntity = Genre.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "GenreID")
     private Genre genre;
+
     public void setAuthors(List<Author> authors) {
         this.authors = authors;
     }
@@ -43,7 +44,6 @@ public class Book {
     public Book(String name) {
         this.name = name;
     }
-
 
 
     public Book(String name, List<Author> authors, Genre genre) {
