@@ -33,10 +33,13 @@ public class BookToStringConverter {
 
 
     public String getBookAsString(List<Book> books) {
+        StringBuilder builder = new StringBuilder("\n");
         var booksString = "";
         for (Book book : books) {
-            booksString = booksString + getBookAsString(book) + "\n";
+            builder.append(getBookAsString(book));
+            builder.append("\n");
+           // booksString = booksString + getBookAsString(book) + "\n";
         }
-        return booksString;
+        return builder.toString();
     }
 }
