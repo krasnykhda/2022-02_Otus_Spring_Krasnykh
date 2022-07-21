@@ -1,12 +1,10 @@
 package spring.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.domain.*;
 
 
-import javax.persistence.EntityManager;
 import java.util.ArrayList;
 
 @Service
@@ -15,15 +13,18 @@ public class LibraryService {
     private final CommentService commentService;
     private final AuthorService authorService;
     private final GenreService genreService;
-
+    private final BookToStringConverter bookToStringConverter;
+    private final CommentToStringConverter commentToStringConverter;
     private final IOService ioService;
 
 
-    public LibraryService(BookService bookService, CommentService commentService, AuthorService authorService, GenreService genreService, IOService ioService) {
+    public LibraryService(BookService bookService, CommentService commentService, AuthorService authorService, GenreService genreService, BookToStringConverter bookToStringConverter, CommentToStringConverter commentToStringConverter, IOService ioService) {
         this.bookService = bookService;
         this.commentService = commentService;
         this.authorService = authorService;
         this.genreService = genreService;
+        this.bookToStringConverter = bookToStringConverter;
+        this.commentToStringConverter = commentToStringConverter;
         this.ioService = ioService;
     }
 
@@ -43,17 +44,17 @@ public class LibraryService {
     @Transactional(readOnly = true)
     public void getById(long id) {
 
-        ioService.out(bookService.getById(id).toString());
+        ioService.out(bookToStringConverter.getBookAsString(bookService.getById(id).get()));
 
     }
 
     @Transactional(readOnly = true)
     public void getAll() {
-       ioService.out(bookService.getAll().toString());
+       ioService.out(bookToStringConverter.getBookAsString(bookService.getAll()));
     }
     @Transactional(readOnly = true)
     public void getCommentsByBookId(long id) {
-        ioService.out(commentService.getByBookID(id).toString());
+        ioService.out(commentToStringConverter.getCommentAsString(commentService.getByBookID(id)));
     }
 
     public void deleteById(long id) {
