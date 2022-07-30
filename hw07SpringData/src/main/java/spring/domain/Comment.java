@@ -14,13 +14,13 @@ import javax.persistence.*;
 @Entity
 @Table(name = "Comments")
 public class Comment {
-    @Id // Позволяет указать какое поле является идентификатором
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Стратегия генерации идентификаторов
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @ManyToOne(targetEntity = Book.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = Book.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "BookID")
     private Book book;
 
