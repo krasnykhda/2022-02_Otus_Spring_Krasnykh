@@ -12,15 +12,21 @@ public class ShellCommands {
 
     private final LibraryService libraryService;
     private final IOService ioService;
+
     @ShellMethod(value = "addBook", key = {"addBook", "ab"})
     public String addBook() {
-        libraryService.insertBook();
+        var bookName = ioService.readLn("Введите название книги");
+        var authorId = ioService.readLn("Введите ID автора");
+        var genreID = ioService.readLn("Введите ID жанра");
+        libraryService.insertBook(bookName, authorId, genreID);
         return "Книга " + "добавлена";
     }
 
     @ShellMethod(value = "addComment", key = {"addComment", "ac"})
     public String addComment() {
-        libraryService.addComment();
+        var bookId = ioService.readLn("Введите ID книги для добавления комментария");
+        var commentName = ioService.readLn("Введите комментарий");
+        libraryService.addComment(bookId, commentName);
         return "Комментарий " + "добавлен";
     }
 
@@ -28,9 +34,11 @@ public class ShellCommands {
     public void getAll() {
         libraryService.getAll();
     }
-    @ShellMethod(value = "getAllComments", key = {"getAllComments", "gac"})
-    public void getAllComments() {
-        libraryService.getAllComments();
+
+    @ShellMethod(value = "getCommentsByBookId", key = {"getCommentsByBookId", "gc"})
+    public void getCommentsByBookId() {
+        var id = ioService.readLn("Введите идентификатор книги");
+        libraryService.getCommentsByBookId(Long.parseLong(id));
     }
 
     @ShellMethod(value = "getById", key = {"getId", "gi"})
@@ -41,17 +49,25 @@ public class ShellCommands {
 
     @ShellMethod(value = "deleteById", key = {"delId", "di"})
     public void delId() {
-        var id = ioService.readLn("Введите идентификатор удалямой книги");
+        var id = ioService.readLn("Введите идентификатор удаляемой книги");
         libraryService.deleteById(Long.parseLong(id));
+    }
+
+    @ShellMethod(value = "deleteComment", key = {"delcomment", "dc"})
+    public void deleteComment() {
+        var id = ioService.readLn("Введите идентификатор удаляемого комментария");
+        libraryService.delComment(Long.parseLong(id));
     }
 
     @ShellMethod(value = "addAuthor2", key = {"adda", "aa"})
     public void addAuthor2() {
-        libraryService.addAuthor();
+        var authorName = ioService.readLn("Введите имя автора");
+        libraryService.addAuthor(authorName);
     }
 
     @ShellMethod(value = "addGenre", key = {"addg", "ag"})
     public void addGenre() {
-        libraryService.addGenre();
+        var genreName = ioService.readLn("Введите имя жанра");
+        libraryService.addGenre(genreName);
     }
 }

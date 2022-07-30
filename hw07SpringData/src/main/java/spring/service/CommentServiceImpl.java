@@ -31,11 +31,11 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.findById(id);
     }
 
-    @Override
-    public List<Comment> getAll() {
-        return commentRepository.findAll();
-    }
 
+    @Override
+    public List<Comment> getByBook(Book book) {
+        return commentRepository.findByBook(book);
+    }
     @Override
     @Transactional
     public void deleteById(long id) {

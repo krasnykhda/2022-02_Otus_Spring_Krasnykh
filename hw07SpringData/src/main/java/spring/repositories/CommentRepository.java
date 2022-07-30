@@ -10,8 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CommentRepository extends CrudRepository<Comment, Long> {
-    @EntityGraph(attributePaths = "book")
-    List<Comment> findAll();
 
     Optional<Comment> findByName(String s);
+    List<Comment> findByBook(Book book);
 }

@@ -1,12 +1,10 @@
 package spring.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.domain.*;
 
 
-import javax.persistence.EntityManager;
 import java.util.ArrayList;
 
 @Service
@@ -17,65 +15,71 @@ public class LibraryService {
     private final GenreService genreService;
 
     private final IOService ioService;
+    private final BookToStringConverter bookToStringConverter;
+    private final CommentToStringConverter commentToStringConverter;
 
-
-    public LibraryService(BookService bookService, CommentService commentService, AuthorService authorService, GenreService genreService, IOService ioService) {
+    public LibraryService(BookService bookService, CommentService commentService, AuthorService authorService, GenreService genreService, IOService ioService, BookToStringConverter bookToStringConverter, CommentToStringConverter commentToStringConverter) {
         this.bookService = bookService;
         this.commentService = commentService;
         this.authorService = authorService;
         this.genreService = genreService;
         this.ioService = ioService;
+        this.bookToStringConverter = bookToStringConverter;
+        this.commentToStringConverter = commentToStringConverter;
     }
 
-    public void insertBook() {
-        var bookName = ioService.readLn("Введите название книги");
+    public void insertBook(String bookName, String authorId, String genreID) {
         var book = bookService.save(new Book(bookName));
-        var authorId = ioService.readLn("Введите ID автора");
-        var genreID = ioService.readLn("Введите ID жанра");
         var authors = new ArrayList<Author>();
-        var author = authorService.getById(Long.parseLong(authorId)).get();
-        authors.add(author);
+        var author = authorService.getById(Long.parseLong(authorId));
+        authors.add(author.get());
         book.setAuthors(authors);
         book.setGenre(genreService.getById(Long.parseLong(genreID)).get());
         bookService.save(book);
 
     }
+
     @Transactional(readOnly = true)
     public void getById(long id) {
-       ioService.out(bookService.getById(id).toString());
+        ioService.out(bookToStringConverter.getBookAsString(bookService.getById(id).get()));
 
     }
+
     @Transactional(readOnly = true)
     public void getAll() {
-        ioService.out(bookService.getAll().toString());
+        ioService.out(bookToStringConverter.getBookAsString(bookService.getAll()));
     }
-    @Transactional(readOnly = true)
-    public void getAllComments() {
-        ioService.out(commentService.getAll().toString());
-    }
+
 
     public void deleteById(long id) {
         bookService.deleteById(id);
 
     }
 
-    public void addComment() {
-        var bookId = ioService.readLn("Введите ID книги для добавления комментария");
-        var book = bookService.getById(Long.parseLong(bookId)).get();
-        var commentName = ioService.readLn("Введите комментарий");
-        var comment=new Comment(commentName);
+    @Transactional(readOnly = true)
+    public void getCommentsByBookId(long id) {
+        ioService.out(commentToStringConverter.getCommentAsString(commentService.getByBook(bookService.getById(id).get())));
+    }
+
+    public void addComment(String bookId, String commentName) {
+        var book = bookService.getById(Long.parseLong(bookId));
+        var comment = new Comment(commentName);
         commentService.save(comment);
-        comment.setBook(book);
+        comment.setBook(book.get());
         commentService.save(comment);
     }
-    public void  addAuthor(){
-        var authorName = ioService.readLn("Введите имя автора");
-        var author=new Author(authorName);
+
+    public void addAuthor(String authorName) {
+        var author = new Author(authorName);
         authorService.save(author);
     }
-    public void  addGenre(){
-        var genreName = ioService.readLn("Введите имя жанра");
-        var genre=new Genre(genreName);
+
+    public void addGenre(String genreName) {
+        var genre = new Genre(genreName);
         genreService.save(genre);
+    }
+
+    public void delComment(long id) {
+        commentService.deleteById(id);
     }
 }

@@ -12,7 +12,7 @@ public interface CommentService {
 
     Optional<Comment> getById(long id);
 
-    List<Comment> getAll();
 
+    List<Comment> getByBook(Book book);
     void deleteById(long id);
 }
