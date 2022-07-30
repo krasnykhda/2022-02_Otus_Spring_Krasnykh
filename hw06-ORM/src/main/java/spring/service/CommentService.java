@@ -10,7 +10,7 @@ public interface CommentService {
     Comment save(Comment comment);
 
 
-    Optional<Comment> getById(long id);
+    Comment getById(long id);
     List<Comment> getByBookID(long id);
 
 

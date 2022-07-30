@@ -16,7 +16,7 @@ public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepository authorRepository;
 
     public AuthorServiceImpl(AuthorRepository authorRepository) {
-       this.authorRepository=authorRepository;
+        this.authorRepository = authorRepository;
     }
 
     @Override
@@ -25,9 +25,9 @@ public class AuthorServiceImpl implements AuthorService {
         return authorRepository.save(author);
     }
 
-   
+
     @Override
-    public Optional<Author> getById(long id) {
+    public Author getById(long id) {
         return authorRepository.findById(id);
     }
 

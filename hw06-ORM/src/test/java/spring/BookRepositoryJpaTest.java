@@ -58,7 +58,7 @@ public class BookRepositoryJpaTest {
             book = new Book("Книга " + i, authors, genre);
             bookRepositoryJpa.save(book);
         }
-        var bookFromDB = bookRepositoryJpa.findById(book.getId()).get();
+        var bookFromDB = bookRepositoryJpa.findById(book.getId());
         Assertions.assertThat(bookFromDB.getName()).isEqualTo("Книга 10");
     }
 
@@ -70,8 +70,8 @@ public class BookRepositoryJpaTest {
         authors.add(author);
         var book = bookRepositoryJpa.save(new Book("Книга 13", authors, new Genre("Роман")));
         var bookFromDB = bookRepositoryJpa.findById(book.getId());
-        Assertions.assertThat(bookFromDB.get().getName()).isEqualTo("Книга 13");
-        Assertions.assertThat(bookFromDB.get().getId()).isEqualTo(book.getId());
+        Assertions.assertThat(bookFromDB.getName()).isEqualTo("Книга 13");
+        Assertions.assertThat(bookFromDB.getId()).isEqualTo(book.getId());
     }
     @Test
     @DisplayName("Метод обновления книги работает корректно")
@@ -81,13 +81,13 @@ public class BookRepositoryJpaTest {
         var authors = new ArrayList<Author>();
         authors.add(author);
         var book = bookRepositoryJpa.save(new Book("Книга 13", authors, genre));
-        var bookFromDB = bookRepositoryJpa.findById(book.getId()).get();
+        var bookFromDB = bookRepositoryJpa.findById(book.getId());
         var author2 = em.find(Author.class, 5L);
         var authors2 = new ArrayList<Author>();
         authors2.add(author2);
         book.setAuthors(authors2);
         bookRepositoryJpa.save(book);
-        bookFromDB = bookRepositoryJpa.findById(book.getId()).get();
+        bookFromDB = bookRepositoryJpa.findById(book.getId());
         Assertions.assertThat(bookFromDB.getAuthors().get(0).getName()).isEqualTo("Чехов");
     }
 

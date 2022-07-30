@@ -10,7 +10,7 @@ public interface BookService {
 
    
 
-    Optional<Book> getById(long id);
+    Book getById(long id);
 
     List<Book> getAll();
 

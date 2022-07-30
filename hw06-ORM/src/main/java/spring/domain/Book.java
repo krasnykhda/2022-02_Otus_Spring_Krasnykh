@@ -25,11 +25,11 @@ public class Book {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
     @Fetch(FetchMode.SUBSELECT)
-    @ManyToMany(targetEntity = Author.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity = Author.class, fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     @JoinTable(name = "books_authors", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
     private List<Author> authors;
-    @ManyToOne(targetEntity = Genre.class, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = Genre.class, cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     @JoinColumn(name = "GenreID")
     private Genre genre;
 

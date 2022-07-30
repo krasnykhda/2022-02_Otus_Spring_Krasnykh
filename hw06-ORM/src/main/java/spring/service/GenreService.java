@@ -9,9 +9,8 @@ import java.util.Optional;
 public interface GenreService {
     Genre save(Genre genre);
 
-   
 
-    Optional<Genre> getById(long id);
+    Genre getById(long id);
 
     List<Genre> getAll();
 

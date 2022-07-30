@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface CommentRepository {
     Comment save(Comment comment);
 
-    Optional<Comment> findById(long id);
+    Comment findById(long id);
 
     List<Comment> findAll();
 

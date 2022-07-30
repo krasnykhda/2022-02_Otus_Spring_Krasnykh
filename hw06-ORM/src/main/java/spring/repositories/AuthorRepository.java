@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface AuthorRepository {
     Author save(Author author);
 
-    Optional<Author> findById(long id);
+    Author findById(long id);
 
     List<Author> findAll();
 

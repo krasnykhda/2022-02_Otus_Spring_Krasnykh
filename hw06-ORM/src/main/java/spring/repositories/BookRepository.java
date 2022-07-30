@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface BookRepository {
     Book save(Book book);
 
-    Optional<Book> findById(long id);
+    Book findById(long id);
 
     List<Book> findAll();
 

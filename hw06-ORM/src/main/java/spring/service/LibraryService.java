@@ -28,27 +28,29 @@ public class LibraryService {
         this.ioService = ioService;
     }
 
-    public void insertBook(String bookName,String authorId,String genreID) {
+    public void insertBook(String bookName, String authorId, String genreID) {
         var book = bookService.save(new Book(bookName));
         var authors = new ArrayList<Author>();
-        var author = authorService.getById(Long.parseLong(authorId)).get();
+        var author = authorService.getById(Long.parseLong(authorId));
         authors.add(author);
         book.setAuthors(authors);
-        book.setGenre(genreService.getById(Long.parseLong(genreID)).get());
+        book.setGenre(genreService.getById(Long.parseLong(genreID)));
         bookService.save(book);
 
     }
+
     @Transactional(readOnly = true)
     public void getById(long id) {
 
-        ioService.out(bookToStringConverter.getBookAsString(bookService.getById(id).get()));
+        ioService.out(bookToStringConverter.getBookAsString(bookService.getById(id)));
 
     }
 
     @Transactional(readOnly = true)
     public void getAll() {
-       ioService.out(bookToStringConverter.getBookAsString(bookService.getAll()));
+        ioService.out(bookToStringConverter.getBookAsString(bookService.getAll()));
     }
+
     @Transactional(readOnly = true)
     public void getCommentsByBookId(long id) {
         ioService.out(commentToStringConverter.getCommentAsString(commentService.getByBookID(id)));
@@ -60,20 +62,25 @@ public class LibraryService {
 
     }
 
-    public void addComment(String bookId) {
-        var book = bookService.getById(Long.parseLong(bookId)).get();
-        var commentName = ioService.readLn("Введите комментарий");
-        var comment=new Comment(commentName);
+    public void addComment(String bookId, String commentName) {
+        var book = bookService.getById(Long.parseLong(bookId));
+        var comment = new Comment(commentName);
         commentService.save(comment);
         comment.setBook(book);
         commentService.save(comment);
     }
-    public void  addAuthor(String authorName){
-        var author=new Author(authorName);
+
+    public void delComment(long id) {
+        commentService.deleteById(id);
+    }
+
+    public void addAuthor(String authorName) {
+        var author = new Author(authorName);
         authorService.save(author);
     }
-    public void  addGenre(String genreName){
-        var genre=new Genre(genreName);
+
+    public void addGenre(String genreName) {
+        var genre = new Genre(genreName);
         genreService.save(genre);
     }
 }

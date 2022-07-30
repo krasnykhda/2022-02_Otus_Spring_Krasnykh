@@ -10,7 +10,7 @@ public interface AuthorService {
     Author save(Author author);
 
 
-    Optional<Author> getById(long id);
+    Author getById(long id);
 
     List<Author> getAll();
 

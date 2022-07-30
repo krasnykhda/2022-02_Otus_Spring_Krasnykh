@@ -13,19 +13,21 @@ public class ShellCommands {
 
     private final LibraryService libraryService;
     private final IOService ioService;
+
     @ShellMethod(value = "addBook", key = {"addBook", "ab"})
     public String addBook() {
         var bookName = ioService.readLn("Введите название книги");
         var authorId = ioService.readLn("Введите ID автора");
         var genreID = ioService.readLn("Введите ID жанра");
-        libraryService.insertBook(bookName,authorId,genreID);
+        libraryService.insertBook(bookName, authorId, genreID);
         return "Книга " + "добавлена";
     }
 
     @ShellMethod(value = "addComment", key = {"addComment", "ac"})
     public String addComment() {
         var bookId = ioService.readLn("Введите ID книги для добавления комментария");
-        libraryService.addComment(bookId);
+        var commentName = ioService.readLn("Введите комментарий");
+        libraryService.addComment(bookId, commentName);
         return "Комментарий " + "добавлен";
     }
 
@@ -33,6 +35,7 @@ public class ShellCommands {
     public void getAll() {
         libraryService.getAll();
     }
+
     @ShellMethod(value = "getCommentsByBookId", key = {"getCommentsByBookId", "gc"})
     public void getCommentsByBookId() {
         var id = ioService.readLn("Введите идентификатор книги");
@@ -49,6 +52,12 @@ public class ShellCommands {
     public void delId() {
         var id = ioService.readLn("Введите идентификатор удаляемой книги");
         libraryService.deleteById(Long.parseLong(id));
+    }
+
+    @ShellMethod(value = "deleteComment", key = {"delcomment", "dc"})
+    public void deleteComment() {
+        var id = ioService.readLn("Введите идентификатор удаляемого комментария");
+        libraryService.delComment(Long.parseLong(id));
     }
 
     @ShellMethod(value = "addAuthor2", key = {"adda", "aa"})

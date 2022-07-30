@@ -16,7 +16,7 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
 
     public CommentServiceImpl(CommentRepository commentRepository) {
-       this.commentRepository=commentRepository;
+        this.commentRepository = commentRepository;
     }
 
     @Override
@@ -25,11 +25,12 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.save(comment);
     }
 
-   
+
     @Override
-    public Optional<Comment> getById(long id) {
+    public Comment getById(long id) {
         return commentRepository.findById(id);
     }
+
     @Override
     public List<Comment> getByBookID(long id) {
         return commentRepository.findByBookID(id);

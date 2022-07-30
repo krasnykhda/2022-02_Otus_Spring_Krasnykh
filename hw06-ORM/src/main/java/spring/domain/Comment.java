@@ -20,7 +20,7 @@ public class Comment {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @ManyToOne(targetEntity = Book.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = Book.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "BookID")
     private Book book;
 

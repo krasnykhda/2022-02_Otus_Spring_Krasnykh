@@ -38,9 +38,9 @@ public class AuthorRepositoryJpa implements AuthorRepository {
     }
 
     @Override
-    public Optional<Author> findById(long id) {
+    public Author findById(long id) {
 
-        return Optional.ofNullable(em.find(Author.class, id));
+        return em.find(Author.class, id);
     }
 
     @Override
@@ -72,11 +72,7 @@ public class AuthorRepositoryJpa implements AuthorRepository {
 
     @Override
     public void deleteById(long id) {
-        Query query = em.createQuery("delete " +
-                "from Author s " +
-                "where s.id = :id");
-        query.setParameter("id", id);
-        query.executeUpdate();
+        em.remove(em.find(Author.class,id));
     }
 
 }

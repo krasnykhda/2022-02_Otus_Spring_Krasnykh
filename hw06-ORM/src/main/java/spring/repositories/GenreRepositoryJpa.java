@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.domain.Author;
+import spring.domain.Book;
 import spring.domain.Genre;
 
 import javax.persistence.EntityManager;
@@ -38,9 +39,9 @@ public class GenreRepositoryJpa implements GenreRepository {
     }
 
     @Override
-    public Optional<Genre> findById(long id) {
+    public Genre findById(long id) {
 
-        return Optional.ofNullable(em.find(Genre.class, id));
+        return em.find(Genre.class, id);
     }
 
     @Override
@@ -72,11 +73,7 @@ public class GenreRepositoryJpa implements GenreRepository {
 
     @Override
     public void deleteById(long id) {
-        Query query = em.createQuery("delete " +
-                "from Genre s " +
-                "where s.id = :id");
-        query.setParameter("id", id);
-        query.executeUpdate();
+        em.remove(em.find(Genre.class,id));
     }
 
 }
