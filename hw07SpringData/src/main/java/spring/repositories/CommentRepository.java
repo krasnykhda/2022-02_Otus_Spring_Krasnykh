@@ -11,6 +11,7 @@ import java.util.Optional;
 
 public interface CommentRepository extends CrudRepository<Comment, Long> {
 
-   List<Comment> findByBook(Book book);
-   Comment  findById(long id);
+    List<Comment> findByBook(Book book);
+
+    Comment findById(long id);
 }

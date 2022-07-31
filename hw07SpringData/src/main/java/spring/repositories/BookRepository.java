@@ -13,5 +13,5 @@ public interface BookRepository extends CrudRepository<Book, Long> {
     @EntityGraph(attributePaths = "genre")
     List<Book> findAll();
 
-    Book  findById(long id);
+    Book findById(long id);
 }

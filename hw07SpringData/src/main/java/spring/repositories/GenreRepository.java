@@ -13,5 +13,6 @@ import java.util.Optional;
 public interface GenreRepository extends CrudRepository<Genre, Long> {
 
     List<Genre> findAll();
-    Genre  findById(long id);
+
+    Genre findById(long id);
 }

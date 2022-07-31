@@ -10,13 +10,11 @@ import java.util.List;
 import java.util.Optional;
 
 
-
 public interface AuthorRepository extends CrudRepository<Author, Long> {
 
     List<Author> findAll();
-    Author  findById(long id);
 
-
+    Author findById(long id);
 
 
 }
