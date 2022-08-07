@@ -1,0 +1,19 @@
+spring:
+  main:
+    allow-circular-references: true
+  data:
+    mongodb:
+      database: company
+mongock:
+  #runner-type: "ApplicationRunner" # default
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - spring.changelogs
+  mongo-db:
+    write-concern:
+      journal: false
+    read-concern: local
+
+logging:
+  level:
+    root: ERROR
